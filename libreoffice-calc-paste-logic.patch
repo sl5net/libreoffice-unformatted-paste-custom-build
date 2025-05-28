@@ -1,0 +1,133 @@
+diff --git a/sc/source/ui/view/cellsh1.cxx b/sc/source/ui/view/cellsh1.cxx
+index b0a6c605714f..678fe75104c8 100644
+--- a/sc/source/ui/view/cellsh1.cxx
++++ b/sc/source/ui/view/cellsh1.cxx
+@@ -19,6 +19,12 @@
+ 
+ #include <config_features.h>
+ 
++#include <asciiopt.hxx>   // for ScAsciiOptions
++
++#include <vcl/svapp.hxx> // For Application::GetSettings()
++
++
++
+ #include <com/sun/star/i18n/TextConversionOption.hpp>
+ #include <com/sun/star/sheet/DataPilotFieldFilter.hpp>
+ 
+@@ -1888,35 +1894,96 @@ void ScCellShell::ExecuteEdit( SfxRequest& rReq )
+             pTabViewShell->CellContentChanged();        // => PasteFromSystem() ???
+             break;
+ 
++
++
++
++
++
++
++
++            
++// In sc/source/ui/view/cellsh1.cxx
++// ... ensure all necessary includes are at the top ...
++// #include <asciiopt.hxx> // For ScAsciiOptions (or <sc/asciiopt.hxx> depending on how it's found)
++// ... other includes for ScImportExport, ScAddress, ScViewData, ScTabViewShell, OUString, rtl_TextEncoding etc.
++
++// ... inside the Execute method ...
+         case SID_PASTE_UNFORMATTED:
+-            // differentiate between own cell data and draw objects/external data
+-            // this makes FID_INS_CELL_CONTENTS superfluous
+-            {
+-                weld::WaitObject aWait( GetViewData().GetDialogParent() );
++        {
++            weld::WaitObject aWait( GetViewData().GetDialogParent() );
+ 
+-                // we should differentiate between SotClipboardFormatId::STRING and SotClipboardFormatId::STRING_TSVC,
+-                // and paste the SotClipboardFormatId::STRING_TSVC if it is available.
+-                // Which makes a difference if the clipboard contains cells with embedded line breaks.
++            vcl::Window* pWin = GetViewData().GetActiveWin();
++            TransferableDataHelper aDataHelper(
++                TransferableDataHelper::CreateFromSystemClipboard(pWin)); // Assuming pWin is valid
++            const uno::Reference<datatransfer::XTransferable>& xTransferable = aDataHelper.GetTransferable();
+ 
+-                SotClipboardFormatId nFormat = HasClipboardFormat( SotClipboardFormatId::STRING_TSVC) ?
+-                    SotClipboardFormatId::STRING_TSVC : SotClipboardFormatId::STRING;
++            SotClipboardFormatId format = SotClipboardFormatId::STRING;
++            bool bPastedSuccessfully = false;
+ 
+-                const bool bRet = pTabViewShell->PasteFromSystem(nFormat, true); // TRUE: no error messages
+-                if ( bRet )
+-                {
+-                    rReq.SetReturnValue(SfxInt16Item(nSlot, 1)); // 1 = success
+-                    rReq.Done();
+-                }
+-                else
++            if (xTransferable.is() && aDataHelper.HasFormat(format))
++            {
++                OUString sStrBuffer;
++                if (aDataHelper.GetString(format, sStrBuffer))
+                 {
+-                    rReq.SetReturnValue(SfxInt16Item(nSlot, 0)); // 0 = fail
++                    ScRange aRange;
++                    SCCOL nPosX = 0;
++                    SCROW nPosY = 0;
++                    SCTAB nTabNo = GetViewData().GetTabNo();
++
++                    if (GetViewData().GetSimpleArea(aRange) == SC_MARK_SIMPLE) {
++                        nPosX = aRange.aStart.Col();
++                        nPosY = aRange.aStart.Row();
++                    } else {
++                        nPosX = GetViewData().GetCurX();
++                        nPosY = GetViewData().GetCurY();
++                    }
++                    ScAddress aCellPos(nPosX, nPosY, nTabNo);
++
++                    auto pObj = std::make_shared<ScImportExport>(GetViewData().GetDocument(), aCellPos);
++                    pObj->SetOverwriting(true);
++
++
++
++
++                    // ScAsciiOptions aOptions; // Default constructor called.
++                                             // This likely sets reasonable defaults for plain text.
++
++                    ScAsciiOptions aOptions; // Declared ONCE
++                    aOptions.SetCharSet(RTL_TEXTENCODING_UNICODE);
++
++
++                    // --- Crucial overrides or confirmations ---
++                    aOptions.SetEvaluateFormulas(true); // ESSENTIAL: Do NOT interpret "=A1+B1" as a formula
++
++
++                    pObj->SetExtOptions(aOptions);
++
++                    if (pObj->ImportString(sStrBuffer, format)) {
++                        bPastedSuccessfully = true;
++                    }
+                 }
++            }
+ 
+-                pTabViewShell->CellContentChanged();        // => PasteFromSystem() ???
++            if (bPastedSuccessfully) {
++                rReq.SetReturnValue(SfxInt16Item(nSlot, 1));
++                rReq.Done();
++                pTabViewShell->CellContentChanged(); // Important to update view
++            } else {
++                rReq.SetReturnValue(SfxInt16Item(nSlot, 0));
++                rReq.Ignore();
+             }
+             break;
++        }
++
++
++       
++
++
++
++
++
+ 
+-        //  other
++            //  other
+ 
+         case FID_INS_ROWBRK:
+             pTabViewShell->InsertPageBreak( false );

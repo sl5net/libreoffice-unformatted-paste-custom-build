@@ -1,0 +1,3 @@
+./sc/inc/scitems.hxx:64:class SfxUInt32Item;
+./include/svx/svddef.hxx:144:class SfxUInt32Item;
+./chart2/source/inc/chartview/ChartSfxItemIds.hxx:28:class SfxUInt32Item;

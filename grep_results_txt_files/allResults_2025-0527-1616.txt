@@ -1,0 +1,42 @@
+--- Search specifically for SID_PASTE_UNFORMATTED within ScCellShell::ExecutePaste context ---
+1871-                                        pTabViewShell->PasteFromSystem(nFormat);
+1872-                                }
+1873-                                rReq.SetReturnValue(SfxInt16Item(nSlot, 1));    // 1 = success
+1874-                                rReq.AppendItem( SfxUInt32Item( nSlot, static_cast<sal_uInt32>(nFormat) ) );
+1875-                                rReq.Done();
+1876-                            }
+1877-                            else
+1878-                            {
+1879-                                rReq.SetReturnValue(SfxInt16Item(nSlot, 0));    // 0 = fail
+1880-                                rReq.Ignore();
+1881-                            }
+1882-                        }
+1883-                        else
+1884-                            rReq.SetReturnValue(SfxInt16Item(nSlot, 0));        // 0 = fail
+1885-                    }
+1886-                }
+1887-            }
+1888-            pTabViewShell->CellContentChanged();        // => PasteFromSystem() ???
+1889-            break;
+1890-
+1891:        case SID_PASTE_UNFORMATTED:
+1892-            // differentiate between own cell data and draw objects/external data
+1893-            // this makes FID_INS_CELL_CONTENTS superfluous
+1894-            {
+1895-                weld::WaitObject aWait( GetViewData().GetDialogParent() );
+1896-
+1897-                // we should differentiate between SotClipboardFormatId::STRING and SotClipboardFormatId::STRING_TSVC,
+1898-                // and paste the SotClipboardFormatId::STRING_TSVC if it is available.
+1899-                // Which makes a difference if the clipboard contains cells with embedded line breaks.
+1900-
+1901-                SotClipboardFormatId nFormat = HasClipboardFormat( SotClipboardFormatId::STRING_TSVC) ?
+1902-                    SotClipboardFormatId::STRING_TSVC : SotClipboardFormatId::STRING;
+1903-
+1904-                const bool bRet = pTabViewShell->PasteFromSystem(nFormat, true); // TRUE: no error messages
+1905-                if ( bRet )
+1906-                {
+1907-                    rReq.SetReturnValue(SfxInt16Item(nSlot, 1)); // 1 = success
+1908-                    rReq.Done();
+1909-                }
+1910-                else
+1911-                {

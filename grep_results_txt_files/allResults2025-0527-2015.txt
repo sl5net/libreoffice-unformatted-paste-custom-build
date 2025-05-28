@@ -1,0 +1,1547 @@
+--- Usage of SfxRequest in sc/source/ui/view/editsh.cxx ---
+sc/source/ui/view/editsh.cxx-159-        pTableView->InsertText( aString );
+sc/source/ui/view/editsh.cxx-160-    if( pTopView )
+sc/source/ui/view/editsh.cxx-161-        pTopView->InsertText( aString );
+sc/source/ui/view/editsh.cxx-162-}
+sc/source/ui/view/editsh.cxx-163-
+sc/source/ui/view/editsh.cxx:164:void ScEditShell::Execute( SfxRequest& rReq )
+sc/source/ui/view/editsh.cxx-165-{
+sc/source/ui/view/editsh.cxx-166-    const SfxItemSet*   pReqArgs    = rReq.GetArgs();
+sc/source/ui/view/editsh.cxx-167-    sal_uInt16              nSlot   = rReq.GetSlot();
+sc/source/ui/view/editsh.cxx-168-    SfxBindings&        rBindings   = rViewData.GetBindings();
+sc/source/ui/view/editsh.cxx-169-
+--
+sc/source/ui/view/editsh.cxx-993-    rBindings.Invalidate( SID_ULINE_VAL_SINGLE );
+sc/source/ui/view/editsh.cxx-994-    rBindings.Invalidate( SID_ULINE_VAL_DOUBLE );
+sc/source/ui/view/editsh.cxx-995-    rBindings.Invalidate( SID_ULINE_VAL_DOTTED );
+sc/source/ui/view/editsh.cxx-996-}
+sc/source/ui/view/editsh.cxx-997-
+sc/source/ui/view/editsh.cxx:998:void ScEditShell::ExecuteAttr(SfxRequest& rReq)
+sc/source/ui/view/editsh.cxx-999-{
+sc/source/ui/view/editsh.cxx-1000-    SfxItemSet          aSet( pEditView->GetEmptyItemSet() );
+sc/source/ui/view/editsh.cxx-1001-    SfxBindings&        rBindings   = rViewData.GetBindings();
+sc/source/ui/view/editsh.cxx-1002-    const SfxItemSet*   pArgs       = rReq.GetArgs();
+sc/source/ui/view/editsh.cxx-1003-    sal_uInt16              nSlot       = rReq.GetSlot();
+--
+sc/source/ui/view/editsh.cxx-1322-    }
+sc/source/ui/view/editsh.cxx-1323-
+sc/source/ui/view/editsh.cxx-1324-    return aStrSelection;
+sc/source/ui/view/editsh.cxx-1325-}
+sc/source/ui/view/editsh.cxx-1326-
+sc/source/ui/view/editsh.cxx:1327:void ScEditShell::ExecuteUndo(const SfxRequest& rReq)
+sc/source/ui/view/editsh.cxx-1328-{
+sc/source/ui/view/editsh.cxx-1329-    //  Undo must be handled here because it's called for both EditViews
+sc/source/ui/view/editsh.cxx-1330-
+sc/source/ui/view/editsh.cxx-1331-    ScInputHandler* pHdl = GetMyInputHdl();
+sc/source/ui/view/editsh.cxx-1332-    OSL_ENSURE(pHdl,"no ScInputHandler");
+--
+sc/source/ui/view/editsh.cxx-1402-        if ( rTopMgr.GetRedoActionCount() == 0 )
+sc/source/ui/view/editsh.cxx-1403-            rSet.DisableItem( SID_REDO );
+sc/source/ui/view/editsh.cxx-1404-    }
+sc/source/ui/view/editsh.cxx-1405-}
+sc/source/ui/view/editsh.cxx-1406-
+sc/source/ui/view/editsh.cxx:1407:void ScEditShell::ExecuteTrans( const SfxRequest& rReq )
+sc/source/ui/view/editsh.cxx-1408-{
+sc/source/ui/view/editsh.cxx-1409-    TransliterationFlags nType = ScViewUtil::GetTransliterationType( rReq.GetSlot() );
+sc/source/ui/view/editsh.cxx-1410-    if ( nType == TransliterationFlags::NONE )
+sc/source/ui/view/editsh.cxx-1411-        return;
+sc/source/ui/view/editsh.cxx-1412-
+
+
+
+--- Usage of ->Execute( in sc/source/ui/view/editsh.cxx ---
+
+
+
+--- Broader search for SFX_CALLMODE_SYNCHRON in sc/ module ---
+sc/source/ui/view/cellsh1.cxx:1949:                SfxRequest aSpecialPasteReq(SID_PASTE_SPECIAL, SFX_CALLMODE_SYNCHRON, pTabViewShell->GetPool());
+sc/source/ui/view/cellsh1.cxx:1955:                    pDispatch->Execute(SID_PASTE_SPECIAL, SFX_CALLMODE_SYNCHRON, &aSpecialPasteReq);
+
+
+
+--- Grep for SfxDispatcher->Execute with SfxRequest object ---
+
+
+
+--- Grep for SfxRequest objects passed to Execute (more context) ---
+
+
+
+--- DEFINITIONS of SFX_CALLMODE_ constants (likely in sfx2/inc) ---
+
+
+
+--- General SfxDispatcher->Execute calls in sc/ module (more context) ---
+
+
+
+--- SfxRequest construction in sc/ module (more context) ---
+sc/qa/unit/scshapetest.cxx-78-    // Create a spreadsheet document with default row height and col width
+sc/qa/unit/scshapetest.cxx-79-    createScDoc();
+sc/qa/unit/scshapetest.cxx-80-
+sc/qa/unit/scshapetest.cxx-81-    // Insert default open Bezier curve
+sc/qa/unit/scshapetest.cxx-82-    ScTabViewShell* pTabViewShell = getViewShell();
+sc/qa/unit/scshapetest.cxx:83:    SfxRequest aReq(pTabViewShell->GetViewFrame(), SID_DRAW_BEZIER_NOFILL);
+sc/qa/unit/scshapetest.cxx-84-    aReq.SetModifier(KEY_MOD1); // Ctrl
+sc/qa/unit/scshapetest.cxx-85-    pTabViewShell->ExecDraw(aReq);
+sc/qa/unit/scshapetest.cxx-86-    pTabViewShell->SetDrawShell(false);
+sc/qa/unit/scshapetest.cxx-87-
+sc/qa/unit/scshapetest.cxx-88-    // Get document and newly created object
+--
+sc/qa/unit/scshapetest.cxx-111-    // Create a spreadsheet document with default row height and col width
+sc/qa/unit/scshapetest.cxx-112-    createScDoc();
+sc/qa/unit/scshapetest.cxx-113-
+sc/qa/unit/scshapetest.cxx-114-    // Insert default line
+sc/qa/unit/scshapetest.cxx-115-    ScTabViewShell* pTabViewShell = getViewShell();
+sc/qa/unit/scshapetest.cxx:116:    SfxRequest aReq(pTabViewShell->GetViewFrame(), SID_DRAW_LINE);
+sc/qa/unit/scshapetest.cxx-117-    aReq.SetModifier(KEY_MOD1); // Ctrl
+sc/qa/unit/scshapetest.cxx-118-    pTabViewShell->ExecDraw(aReq);
+sc/qa/unit/scshapetest.cxx-119-    pTabViewShell->SetDrawShell(false);
+sc/qa/unit/scshapetest.cxx-120-
+sc/qa/unit/scshapetest.cxx-121-    // Get document and newly created object
+--
+sc/qa/unit/scshapetest.cxx-551-    // Load an empty document.
+sc/qa/unit/scshapetest.cxx-552-    createScDoc("ods/ManualColWidthRowHeight.ods");
+sc/qa/unit/scshapetest.cxx-553-
+sc/qa/unit/scshapetest.cxx-554-    // Create default measureline by SfxRequest that corresponds to Ctrl+Click
+sc/qa/unit/scshapetest.cxx-555-    ScTabViewShell* pTabViewShell = getViewShell();
+sc/qa/unit/scshapetest.cxx:556:    SfxRequest aReq(pTabViewShell->GetViewFrame(), SID_DRAW_MEASURELINE);
+sc/qa/unit/scshapetest.cxx-557-    aReq.SetModifier(KEY_MOD1); // Ctrl
+sc/qa/unit/scshapetest.cxx-558-    pTabViewShell->ExecDraw(aReq);
+sc/qa/unit/scshapetest.cxx-559-
+sc/qa/unit/scshapetest.cxx-560-    // Get document and newly created measure line.
+sc/qa/unit/scshapetest.cxx-561-    ScDocument* pDoc = getScDoc();
+--
+sc/source/ui/vba/vbaapplication.cxx-1391-{
+sc/source/ui/vba/vbaapplication.cxx-1392-    ScTabViewShell* pViewShell = excel::getCurrentBestViewShell( mxContext );
+sc/source/ui/vba/vbaapplication.cxx-1393-    if ( pViewShell && ( _displayformulabar !=  getDisplayFormulaBar() ) )
+sc/source/ui/vba/vbaapplication.cxx-1394-    {
+sc/source/ui/vba/vbaapplication.cxx-1395-        SfxAllItemSet reqList(  SfxGetpApp()->GetPool() );
+sc/source/ui/vba/vbaapplication.cxx:1396:        SfxRequest aReq( FID_TOGGLEINPUTLINE, SfxCallMode::SLOT, reqList );
+sc/source/ui/vba/vbaapplication.cxx-1397-        pViewShell->Execute( aReq );
+sc/source/ui/vba/vbaapplication.cxx-1398-    }
+sc/source/ui/vba/vbaapplication.cxx-1399-}
+sc/source/ui/vba/vbaapplication.cxx-1400-
+sc/source/ui/vba/vbaapplication.cxx-1401-uno::Any SAL_CALL
+--
+sc/source/ui/unoobj/viewuno.cxx-1688-    // Note: executing this slot through the dispatcher
+sc/source/ui/unoobj/viewuno.cxx-1689-    // will cause the style dialog to be raised so we go
+sc/source/ui/unoobj/viewuno.cxx-1690-    // direct here
+sc/source/ui/unoobj/viewuno.cxx-1691-    ScFormatShell aShell( GetViewShell()->GetViewData() );
+sc/source/ui/unoobj/viewuno.cxx-1692-    SfxAllItemSet reqList( SfxGetpApp()->GetPool() );
+sc/source/ui/unoobj/viewuno.cxx:1693:    SfxRequest aReq( SID_STYLE_END_PREVIEW, SfxCallMode::SLOT, reqList );
+sc/source/ui/unoobj/viewuno.cxx-1694-    aShell.ExecuteStyle( aReq );
+sc/source/ui/unoobj/viewuno.cxx-1695-    lang::EventObject aEvent;
+sc/source/ui/unoobj/viewuno.cxx-1696-    aEvent.Source.set(getXWeak());
+sc/source/ui/unoobj/viewuno.cxx-1697-    for (const auto& rListener : aSelectionChgListeners)
+sc/source/ui/unoobj/viewuno.cxx-1698-        rListener->selectionChanged( aEvent );
+--
+sc/source/ui/view/cellsh1.cxx-404-
+sc/source/ui/view/cellsh1.cxx-405-                        VclPtr<AbstractScInsertCellDlg> pDlg(pFact->CreateScInsertCellDlg(pTabViewShell->GetFrameWeld(), GetViewData(), bTheFlag));
+sc/source/ui/view/cellsh1.cxx-406-                        pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh1.cxx-407-                            if (nResult == RET_OK)
+sc/source/ui/view/cellsh1.cxx-408-                            {
+sc/source/ui/view/cellsh1.cxx:409:                                SfxRequest aRequest(pTabViewShell->GetViewFrame(), FID_INS_CELL);
+sc/source/ui/view/cellsh1.cxx-410-                                InsCellCmd eTmpCmd = pDlg->GetInsCellCmd();
+sc/source/ui/view/cellsh1.cxx-411-                                size_t nInsCount = pDlg->GetCount();
+sc/source/ui/view/cellsh1.cxx-412-                                InsertCells(pTabViewShell, aRequest, eTmpCmd, nInsCount);
+sc/source/ui/view/cellsh1.cxx-413-                            }
+sc/source/ui/view/cellsh1.cxx-414-                            pDlg->disposeOnce();
+--
+sc/source/ui/view/cellsh1.cxx-461-                        VclPtr<AbstractScDeleteCellDlg> pDlg(pFact->CreateScDeleteCellDlg( pTabViewShell->GetFrameWeld(), bTheFlag ));
+sc/source/ui/view/cellsh1.cxx-462-
+sc/source/ui/view/cellsh1.cxx-463-                        pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh1.cxx-464-                            if (nResult == RET_OK)
+sc/source/ui/view/cellsh1.cxx-465-                            {
+sc/source/ui/view/cellsh1.cxx:466:                                SfxRequest aRequest(pTabViewShell->GetViewFrame(), FID_INS_CELL);
+sc/source/ui/view/cellsh1.cxx-467-                                DeleteCells(pTabViewShell, aRequest, pDlg->GetDelCellCmd());
+sc/source/ui/view/cellsh1.cxx-468-                            }
+sc/source/ui/view/cellsh1.cxx-469-                            pDlg->disposeOnce();
+sc/source/ui/view/cellsh1.cxx-470-                        });
+sc/source/ui/view/cellsh1.cxx-471-                    }
+--
+sc/source/ui/view/cellsh1.cxx-1946-                pViewFrame = &(pTabViewShell->GetViewFrame()); // Get reference, then take address
+sc/source/ui/view/cellsh1.cxx-1947-            }
+sc/source/ui/view/cellsh1.cxx-1948-
+sc/source/ui/view/cellsh1.cxx-1949-            if (pViewFrame && pTabViewShell) // Also check pTabViewShell for GetPool()
+sc/source/ui/view/cellsh1.cxx-1950-            {
+sc/source/ui/view/cellsh1.cxx:1951:                SfxRequest aSpecialPasteReq(SID_PASTE_SPECIAL, SFX_CALLMODE_SYNCHRON, pTabViewShell->GetPool());
+sc/source/ui/view/cellsh1.cxx-1952-                aSpecialPasteReq.AppendItem(SfxUInt32Item(SID_PASTE_SPECIAL, nUnformattedFormatId));
+sc/source/ui/view/cellsh1.cxx-1953-
+sc/source/ui/view/cellsh1.cxx-1954-                SfxDispatcher* pDispatch = pViewFrame->GetDispatcher();
+sc/source/ui/view/cellsh1.cxx-1955-                if (pDispatch)
+sc/source/ui/view/cellsh1.cxx-1956-                {
+--
+sc/source/ui/view/viewfun2.cxx-1306-
+sc/source/ui/view/viewfun2.cxx-1307-                    doMerge(bRealDoContents, bRealEmptyMergedCells);
+sc/source/ui/view/viewfun2.cxx-1308-
+sc/source/ui/view/viewfun2.cxx-1309-                    if (nSlot != 0)
+sc/source/ui/view/viewfun2.cxx-1310-                    {
+sc/source/ui/view/viewfun2.cxx:1311:                        SfxRequest aReq(pViewShell->GetViewFrame(), nSlot);
+sc/source/ui/view/viewfun2.cxx-1312-                        if (!bApi && bRealDoContents)
+sc/source/ui/view/viewfun2.cxx-1313-                            aReq.AppendItem(SfxBoolItem(nSlot, bDoContents));
+sc/source/ui/view/viewfun2.cxx-1314-                        SfxBindings& rBindings = pViewShell->GetViewFrame().GetBindings();
+sc/source/ui/view/viewfun2.cxx-1315-                        rBindings.Invalidate(nSlot);
+sc/source/ui/view/viewfun2.cxx-1316-                        aReq.Done();
+--
+sc/source/ui/view/prevwsh.cxx-983-                tools::Long nPage = pPreview->GetPageNo();
+sc/source/ui/view/prevwsh.cxx-984-
+sc/source/ui/view/prevwsh.cxx-985-                if( nPage>0 )
+sc/source/ui/view/prevwsh.cxx-986-                {
+sc/source/ui/view/prevwsh.cxx-987-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:988:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_PREVIOUS);
+sc/source/ui/view/prevwsh.cxx-989-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-990-                }
+sc/source/ui/view/prevwsh.cxx-991-            }
+sc/source/ui/view/prevwsh.cxx-992-            else
+sc/source/ui/view/prevwsh.cxx-993-                aCurPos.AdjustY( -nVLine );
+--
+sc/source/ui/view/prevwsh.cxx-1006-                }
+sc/source/ui/view/prevwsh.cxx-1007-
+sc/source/ui/view/prevwsh.cxx-1008-                if( nPage<nTotal-1 )
+sc/source/ui/view/prevwsh.cxx-1009-                {
+sc/source/ui/view/prevwsh.cxx-1010-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:1011:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_NEXT);
+sc/source/ui/view/prevwsh.cxx-1012-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-1013-                }
+sc/source/ui/view/prevwsh.cxx-1014-            }
+sc/source/ui/view/prevwsh.cxx-1015-            else
+sc/source/ui/view/prevwsh.cxx-1016-                aCurPos.AdjustY(nVLine );
+--
+sc/source/ui/view/prevwsh.cxx-1027-                tools::Long nPage = pPreview->GetPageNo();
+sc/source/ui/view/prevwsh.cxx-1028-
+sc/source/ui/view/prevwsh.cxx-1029-                if( nPage>0 )
+sc/source/ui/view/prevwsh.cxx-1030-                {
+sc/source/ui/view/prevwsh.cxx-1031-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:1032:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_PREVIOUS);
+sc/source/ui/view/prevwsh.cxx-1033-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-1034-                    aCurPos.setY( nVRange );
+sc/source/ui/view/prevwsh.cxx-1035-                }
+sc/source/ui/view/prevwsh.cxx-1036-            }
+sc/source/ui/view/prevwsh.cxx-1037-            else
+--
+sc/source/ui/view/prevwsh.cxx-1050-                    nTotal = pPreview->GetTotalPages();
+sc/source/ui/view/prevwsh.cxx-1051-                }
+sc/source/ui/view/prevwsh.cxx-1052-                if( nPage<nTotal-1 )
+sc/source/ui/view/prevwsh.cxx-1053-                {
+sc/source/ui/view/prevwsh.cxx-1054-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:1055:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_NEXT);
+sc/source/ui/view/prevwsh.cxx-1056-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-1057-                    aCurPos.setY( 0 );
+sc/source/ui/view/prevwsh.cxx-1058-                }
+sc/source/ui/view/prevwsh.cxx-1059-            }
+sc/source/ui/view/prevwsh.cxx-1060-            else
+--
+sc/source/ui/view/prevwsh.cxx-1066-                tools::Long nPage  = pPreview->GetPageNo();
+sc/source/ui/view/prevwsh.cxx-1067-                tools::Long nTotal = pPreview->GetTotalPages();
+sc/source/ui/view/prevwsh.cxx-1068-                if( nTotal && nPage != 0 )
+sc/source/ui/view/prevwsh.cxx-1069-                {
+sc/source/ui/view/prevwsh.cxx-1070-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:1071:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_FIRST);
+sc/source/ui/view/prevwsh.cxx-1072-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-1073-                }
+sc/source/ui/view/prevwsh.cxx-1074-            }
+sc/source/ui/view/prevwsh.cxx-1075-            else
+sc/source/ui/view/prevwsh.cxx-1076-            {
+--
+sc/source/ui/view/prevwsh.cxx-1086-                tools::Long nPage  = pPreview->GetPageNo();
+sc/source/ui/view/prevwsh.cxx-1087-                tools::Long nTotal = pPreview->GetTotalPages();
+sc/source/ui/view/prevwsh.cxx-1088-                if( nTotal && nPage+1 != nTotal )
+sc/source/ui/view/prevwsh.cxx-1089-                {
+sc/source/ui/view/prevwsh.cxx-1090-                    SfxViewFrame& rSfxViewFrame = GetViewFrame();
+sc/source/ui/view/prevwsh.cxx:1091:                    SfxRequest aSfxRequest(rSfxViewFrame, SID_PREVIEW_LAST);
+sc/source/ui/view/prevwsh.cxx-1092-                    Execute( aSfxRequest );
+sc/source/ui/view/prevwsh.cxx-1093-                }
+sc/source/ui/view/prevwsh.cxx-1094-            }
+sc/source/ui/view/prevwsh.cxx-1095-            else
+sc/source/ui/view/prevwsh.cxx-1096-            {
+--
+sc/source/ui/view/tabview5.cxx-248-            pGridWin[i]->SetMapMode(pGridWin[i]->GetDrawMapMode());
+sc/source/ui/view/tabview5.cxx-249-
+sc/source/ui/view/tabview5.cxx-250-            pGridWin[i]->PaintImmediately(); // because of Invalidate in DrawView ctor (ShowPage),
+sc/source/ui/view/tabview5.cxx-251-                                             // so that immediately can be drawn
+sc/source/ui/view/tabview5.cxx-252-        }
+sc/source/ui/view/tabview5.cxx:253:    SfxRequest aSfxRequest(SID_OBJECT_SELECT, SfxCallMode::SLOT, aViewData.GetViewShell()->GetPool());
+sc/source/ui/view/tabview5.cxx-254-    SetDrawFuncPtr(new FuSelection(*aViewData.GetViewShell(), GetActiveWin(), pDrawView.get(),
+sc/source/ui/view/tabview5.cxx-255-                                   pLayer,aSfxRequest));
+sc/source/ui/view/tabview5.cxx-256-
+sc/source/ui/view/tabview5.cxx-257-    //  used when switching back from page preview: restore saved design mode state
+sc/source/ui/view/tabview5.cxx-258-    //  (otherwise, keep the default from the draw view ctor)
+--
+sc/source/ui/view/cellsh3.cxx-737-                        eMetric, 2, MAX_ROW_HEIGHT));
+sc/source/ui/view/cellsh3.cxx-738-
+sc/source/ui/view/cellsh3.cxx-739-                    pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh3.cxx-740-                        if (nResult == RET_OK)
+sc/source/ui/view/cellsh3.cxx-741-                        {
+sc/source/ui/view/cellsh3.cxx:742:                            SfxRequest pRequest(pTabViewShell->GetViewFrame(), FID_ROW_HEIGHT);
+sc/source/ui/view/cellsh3.cxx-743-                            tools::Long nVal = pDlg->GetInputValue();
+sc/source/ui/view/cellsh3.cxx-744-                            pTabViewShell->SetMarkedWidthOrHeight( false, SC_SIZE_DIRECT, static_cast<sal_uInt16>(nVal) );
+sc/source/ui/view/cellsh3.cxx-745-
+sc/source/ui/view/cellsh3.cxx-746-                            // #101390#; the value of the macro should be in HMM so use TwipsToEvenHMM to convert
+sc/source/ui/view/cellsh3.cxx-747-                            pRequest.AppendItem( SfxUInt16Item( FID_ROW_HEIGHT, static_cast<sal_uInt16>(TwipsToEvenHMM(nVal)) ) );
+--
+sc/source/ui/view/cellsh3.cxx-777-                        ScGlobal::nLastRowHeightExtra, 0, eMetric, 2, MAX_EXTRA_HEIGHT));
+sc/source/ui/view/cellsh3.cxx-778-
+sc/source/ui/view/cellsh3.cxx-779-                    pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh3.cxx-780-                        if ( nResult == RET_OK )
+sc/source/ui/view/cellsh3.cxx-781-                        {
+sc/source/ui/view/cellsh3.cxx:782:                            SfxRequest pRequest(pTabViewShell->GetViewFrame(), FID_ROW_OPT_HEIGHT);
+sc/source/ui/view/cellsh3.cxx-783-                            tools::Long nVal = pDlg->GetInputValue();
+sc/source/ui/view/cellsh3.cxx-784-                            pTabViewShell->SetMarkedWidthOrHeight( false, SC_SIZE_OPTIMAL, static_cast<sal_uInt16>(nVal) );
+sc/source/ui/view/cellsh3.cxx-785-                            ScGlobal::nLastRowHeightExtra = nVal;
+sc/source/ui/view/cellsh3.cxx-786-
+sc/source/ui/view/cellsh3.cxx-787-                            // #101390#; the value of the macro should be in HMM so use TwipsToEvenHMM to convert
+--
+sc/source/ui/view/cellsh3.cxx-842-                        STD_COL_WIDTH, eMetric, 2, MAX_COL_WIDTH));
+sc/source/ui/view/cellsh3.cxx-843-
+sc/source/ui/view/cellsh3.cxx-844-                    pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh3.cxx-845-                        if ( nResult == RET_OK )
+sc/source/ui/view/cellsh3.cxx-846-                        {
+sc/source/ui/view/cellsh3.cxx:847:                            SfxRequest pRequest(pTabViewShell->GetViewFrame(), FID_COL_WIDTH);
+sc/source/ui/view/cellsh3.cxx-848-                            tools::Long nVal = pDlg->GetInputValue();
+sc/source/ui/view/cellsh3.cxx-849-                            pTabViewShell->SetMarkedWidthOrHeight( true, SC_SIZE_DIRECT, static_cast<sal_uInt16>(nVal) );
+sc/source/ui/view/cellsh3.cxx-850-
+sc/source/ui/view/cellsh3.cxx-851-                            // #101390#; the value of the macro should be in HMM so use TwipsToEvenHMM to convert
+sc/source/ui/view/cellsh3.cxx-852-                            pRequest.AppendItem( SfxUInt16Item( FID_COL_WIDTH, static_cast<sal_uInt16>(TwipsToEvenHMM(nVal))) );
+--
+sc/source/ui/view/cellsh3.cxx-880-                    VclPtr<AbstractScMetricInputDlg> pDlg(pFact->CreateScMetricInputDlg(
+sc/source/ui/view/cellsh3.cxx-881-                        pTabViewShell->GetFrameWeld(), u"OptimalColWidthDialog"_ustr,
+sc/source/ui/view/cellsh3.cxx-882-                        ScGlobal::nLastColWidthExtra, STD_EXTRA_WIDTH, eMetric, 2, MAX_EXTRA_WIDTH));
+sc/source/ui/view/cellsh3.cxx-883-
+sc/source/ui/view/cellsh3.cxx-884-                    pDlg->StartExecuteAsync([pDlg, pTabViewShell](sal_Int32 nResult){
+sc/source/ui/view/cellsh3.cxx:885:                        SfxRequest pRequest(pTabViewShell->GetViewFrame(), FID_COL_OPT_WIDTH);
+sc/source/ui/view/cellsh3.cxx-886-                        if ( nResult == RET_OK )
+sc/source/ui/view/cellsh3.cxx-887-                        {
+sc/source/ui/view/cellsh3.cxx-888-                            tools::Long nVal = pDlg->GetInputValue();
+sc/source/ui/view/cellsh3.cxx-889-                            pTabViewShell->SetMarkedWidthOrHeight( true, SC_SIZE_OPTIMAL, static_cast<sal_uInt16>(nVal) );
+sc/source/ui/view/cellsh3.cxx-890-                            ScGlobal::nLastColWidthExtra = nVal;
+--
+sc/source/ui/view/cellsh2.cxx-540-                                    // subtotal when needed new
+sc/source/ui/view/cellsh2.cxx-541-
+sc/source/ui/view/cellsh2.cxx-542-                                    pTabViewShell->UISort( rOutParam );
+sc/source/ui/view/cellsh2.cxx-543-
+sc/source/ui/view/cellsh2.cxx-544-                                    SfxViewFrame& rViewFrm = pTabViewShell->GetViewFrame();
+sc/source/ui/view/cellsh2.cxx:545:                                    SfxRequest aRequest(rViewFrm, SID_SORT);
+sc/source/ui/view/cellsh2.cxx-546-
+sc/source/ui/view/cellsh2.cxx-547-                                    if ( rOutParam.bInplace )
+sc/source/ui/view/cellsh2.cxx-548-                                    {
+sc/source/ui/view/cellsh2.cxx-549-                                        aRequest.AppendItem( SfxBoolItem( SID_SORT_BYROW,
+sc/source/ui/view/cellsh2.cxx-550-                                            rOutParam.bByRow ) );
+--
+sc/source/ui/view/cellsh2.cxx-778-                            {
+sc/source/ui/view/cellsh2.cxx-779-                                if (nResult == RET_OK)
+sc/source/ui/view/cellsh2.cxx-780-                                {
+sc/source/ui/view/cellsh2.cxx-781-                                    OUString aName = pDlg->GetSelectedEntry();
+sc/source/ui/view/cellsh2.cxx-782-                                    pTabViewShell->GotoDBArea(aName);
+sc/source/ui/view/cellsh2.cxx:783:                                    SfxRequest aRequest(pTabViewShell->GetViewFrame(),
+sc/source/ui/view/cellsh2.cxx-784-                                                        SID_SELECT_DB);
+sc/source/ui/view/cellsh2.cxx-785-                                    aRequest.AppendItem(SfxStringItem(SID_SELECT_DB, aName));
+sc/source/ui/view/cellsh2.cxx-786-                                    aRequest.Done();
+sc/source/ui/view/cellsh2.cxx-787-                                }
+sc/source/ui/view/cellsh2.cxx-788-
+--
+sc/source/ui/view/tabvwsh2.cxx-202-        pTabView->GetDrawFuncPtr()->Deactivate();
+sc/source/ui/view/tabvwsh2.cxx-203-        pTabView->SetDrawFuncOldPtr(pTabView->GetDrawFuncPtr());
+sc/source/ui/view/tabvwsh2.cxx-204-        pTabView->SetDrawFuncPtr(nullptr);
+sc/source/ui/view/tabvwsh2.cxx-205-    }
+sc/source/ui/view/tabvwsh2.cxx-206-
+sc/source/ui/view/tabvwsh2.cxx:207:    SfxRequest aNewReq(rReq);
+sc/source/ui/view/tabvwsh2.cxx-208-    aNewReq.SetSlot(nDrawSfxId);
+sc/source/ui/view/tabvwsh2.cxx-209-
+sc/source/ui/view/tabvwsh2.cxx-210-    assert(nNewId != SID_DRAW_CHART); //#i71254# handled already above
+sc/source/ui/view/tabvwsh2.cxx-211-
+sc/source/ui/view/tabvwsh2.cxx-212-    // for LibreOfficeKit - choosing a shape should construct it directly
+
+
+
+--- Grep for 'enum class SfxCallMode' definition ---
+
+
+
+sc/source/ui/Accessibility/AccessibleText.cxx-814-
+sc/source/ui/Accessibility/AccessibleText.cxx-815-            if (mpEditEngine && !mbEditEngineCreated)
+sc/source/ui/Accessibility/AccessibleText.cxx-816-                ResetEditMode();
+sc/source/ui/Accessibility/AccessibleText.cxx-817-            if (!mpEditEngine)
+sc/source/ui/Accessibility/AccessibleText.cxx-818-            {
+sc/source/ui/Accessibility/AccessibleText.cxx:819:                rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/Accessibility/AccessibleText.cxx-820-                mpEditEngine = new ScFieldEditEngine(nullptr, pEnginePool.get(), nullptr, true);
+sc/source/ui/Accessibility/AccessibleText.cxx-821-                mbEditEngineCreated = true;
+sc/source/ui/Accessibility/AccessibleText.cxx-822-                mpEditEngine->EnableUndo( false );
+sc/source/ui/Accessibility/AccessibleText.cxx-823-                mpEditEngine->SetRefMapMode(MapMode(MapUnit::Map100thMM));
+sc/source/ui/Accessibility/AccessibleText.cxx-824-                mpForwarder.reset(new SvxEditEngineForwarder(*mpEditEngine));
+--
+sc/source/ui/Accessibility/AccessibleText.cxx-1017-            ScDocument& rDoc = pDocShell->GetDocument();
+sc/source/ui/Accessibility/AccessibleText.cxx-1018-            pEditEngine = rDoc.CreateFieldEditEngine();
+sc/source/ui/Accessibility/AccessibleText.cxx-1019-        }
+sc/source/ui/Accessibility/AccessibleText.cxx-1020-        else
+sc/source/ui/Accessibility/AccessibleText.cxx-1021-        {
+sc/source/ui/Accessibility/AccessibleText.cxx:1022:            rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/Accessibility/AccessibleText.cxx-1023-            pEditEngine.reset( new ScFieldEditEngine(nullptr, pEnginePool.get(), nullptr, true) );
+sc/source/ui/Accessibility/AccessibleText.cxx-1024-        }
+sc/source/ui/Accessibility/AccessibleText.cxx-1025-        pEditEngine->EnableUndo( false );
+sc/source/ui/Accessibility/AccessibleText.cxx-1026-        if (pDocShell)
+sc/source/ui/Accessibility/AccessibleText.cxx-1027-            pEditEngine->SetRefDevice(pDocShell->GetRefDevice());
+--
+sc/source/ui/Accessibility/AccessibleText.cxx-1117-
+sc/source/ui/Accessibility/AccessibleText.cxx-1118-SvxTextForwarder* ScAccessibleHeaderTextData::GetTextForwarder()
+sc/source/ui/Accessibility/AccessibleText.cxx-1119-{
+sc/source/ui/Accessibility/AccessibleText.cxx-1120-    if (!mpEditEngine)
+sc/source/ui/Accessibility/AccessibleText.cxx-1121-    {
+sc/source/ui/Accessibility/AccessibleText.cxx:1122:        rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/Accessibility/AccessibleText.cxx-1123-        std::unique_ptr<ScHeaderEditEngine> pHdrEngine(new ScHeaderEditEngine( pEnginePool.get() ));
+sc/source/ui/Accessibility/AccessibleText.cxx-1124-
+sc/source/ui/Accessibility/AccessibleText.cxx-1125-        pHdrEngine->EnableUndo( false );
+sc/source/ui/Accessibility/AccessibleText.cxx-1126-        pHdrEngine->SetRefMapMode(MapMode(MapUnit::MapTwip));
+sc/source/ui/Accessibility/AccessibleText.cxx-1127-
+--
+sc/source/ui/Accessibility/AccessibleText.cxx-1244-            ScDocument& rDoc = mpDocSh->GetDocument();
+sc/source/ui/Accessibility/AccessibleText.cxx-1245-            mpEditEngine = rDoc.CreateFieldEditEngine();
+sc/source/ui/Accessibility/AccessibleText.cxx-1246-        }
+sc/source/ui/Accessibility/AccessibleText.cxx-1247-        else
+sc/source/ui/Accessibility/AccessibleText.cxx-1248-        {
+sc/source/ui/Accessibility/AccessibleText.cxx:1249:            rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/Accessibility/AccessibleText.cxx-1250-            mpEditEngine.reset( new ScFieldEditEngine(nullptr, pEnginePool.get(), nullptr, true) );
+sc/source/ui/Accessibility/AccessibleText.cxx-1251-        }
+sc/source/ui/Accessibility/AccessibleText.cxx-1252-        mpEditEngine->EnableUndo( false );
+sc/source/ui/Accessibility/AccessibleText.cxx-1253-        if (mpDocSh)
+sc/source/ui/Accessibility/AccessibleText.cxx-1254-            mpEditEngine->SetRefDevice(mpDocSh->GetRefDevice());
+--
+sc/source/ui/attrdlg/scdlgfact.cxx-825-{
+sc/source/ui/attrdlg/scdlgfact.cxx-826-public:
+sc/source/ui/attrdlg/scdlgfact.cxx-827-    using vcl::AbstractDialogImpl_Async<SfxAbstractTabDialog, Dialog>::AbstractDialogImpl_Async;
+sc/source/ui/attrdlg/scdlgfact.cxx-828-    void SetCurPageId(const OUString& rName) override { this->m_pDlg->SetCurPageId(rName); }
+sc/source/ui/attrdlg/scdlgfact.cxx-829-    const SfxItemSet* GetOutputItemSet() const override { return this->m_pDlg->GetOutputItemSet(); }
+sc/source/ui/attrdlg/scdlgfact.cxx:830:    WhichRangesContainer GetInputRanges(const SfxItemPool& pItem) override
+sc/source/ui/attrdlg/scdlgfact.cxx-831-    {
+sc/source/ui/attrdlg/scdlgfact.cxx-832-        return this->m_pDlg->GetInputRanges(pItem);
+sc/source/ui/attrdlg/scdlgfact.cxx-833-    }
+sc/source/ui/attrdlg/scdlgfact.cxx-834-    void SetInputSet(const SfxItemSet* pInSet) override { this->m_pDlg->SetInputSet(pInSet); }
+sc/source/ui/attrdlg/scdlgfact.cxx-835-    // From class Window.
+--
+sc/source/ui/drawfunc/drtxtob.cxx-953-        // #i78017 establish the same behaviour as in Writer
+sc/source/ui/drawfunc/drtxtob.cxx-954-        SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/drawfunc/drtxtob.cxx-955-        if (nSlot == SID_ATTR_CHAR_FONT)
+sc/source/ui/drawfunc/drtxtob.cxx-956-            nScript = pView->GetScriptType();
+sc/source/ui/drawfunc/drtxtob.cxx-957-
+sc/source/ui/drawfunc/drtxtob.cxx:958:        SfxItemPool& rPool = GetPool();
+sc/source/ui/drawfunc/drtxtob.cxx-959-        SvxScriptSetItem aSetItem( nSlot, rPool );
+sc/source/ui/drawfunc/drtxtob.cxx-960-        sal_uInt16 nWhich = rPool.GetWhichIDFromSlotID( nSlot );
+sc/source/ui/drawfunc/drtxtob.cxx-961-        aSetItem.PutItemForScriptType( nScript, pArgs->Get( nWhich ) );
+sc/source/ui/drawfunc/drtxtob.cxx-962-
+sc/source/ui/drawfunc/drtxtob.cxx-963-        pView->SetAttributes( aSetItem.GetItemSet() );
+--
+sc/source/ui/drawfunc/drtxtob.cxx-1237-    pView->GetAttributes(aEditAttr);
+sc/source/ui/drawfunc/drtxtob.cxx-1238-    //SfxItemSet    aAttrs( *aEditAttr.GetPool(), aEditAttr.GetRanges() );
+sc/source/ui/drawfunc/drtxtob.cxx-1239-
+sc/source/ui/drawfunc/drtxtob.cxx-1240-    while ( nWhich )
+sc/source/ui/drawfunc/drtxtob.cxx-1241-    {
+sc/source/ui/drawfunc/drtxtob.cxx:1242:        sal_uInt16 nSlotId = SfxItemPool::IsWhich(nWhich)
+sc/source/ui/drawfunc/drtxtob.cxx-1243-            ? GetPool().GetSlotId(nWhich)
+sc/source/ui/drawfunc/drtxtob.cxx-1244-            : nWhich;
+sc/source/ui/drawfunc/drtxtob.cxx-1245-        switch ( nSlotId )
+sc/source/ui/drawfunc/drtxtob.cxx-1246-        {
+sc/source/ui/drawfunc/drtxtob.cxx-1247-            case SID_TABLE_VERT_NONE:
+--
+sc/source/ui/drawfunc/drtxtob1.cxx-61-}
+sc/source/ui/drawfunc/drtxtob1.cxx-62-
+sc/source/ui/drawfunc/drtxtob1.cxx-63-bool ScDrawTextObjectBar::ExecuteParaDlg( const SfxItemSet& rArgs,
+sc/source/ui/drawfunc/drtxtob1.cxx-64-                                                SfxItemSet& rOutSet )
+sc/source/ui/drawfunc/drtxtob1.cxx-65-{
+sc/source/ui/drawfunc/drtxtob1.cxx:66:    SfxItemPool* pArgPool = rArgs.GetPool();
+sc/source/ui/drawfunc/drtxtob1.cxx-67-    SfxItemSet aNewAttr(SfxItemSet::makeFixedSfxItemSet<EE_ITEMS_START, EE_ITEMS_END,
+sc/source/ui/drawfunc/drtxtob1.cxx-68-                                                        SID_ATTR_PARA_PAGEBREAK, SID_ATTR_PARA_WIDOWS>(*pArgPool));
+sc/source/ui/drawfunc/drtxtob1.cxx-69-    aNewAttr.Put( rArgs );
+sc/source/ui/drawfunc/drtxtob1.cxx-70-
+sc/source/ui/drawfunc/drtxtob1.cxx-71-    // Values have been taken over once to show the dialog.
+--
+sc/source/ui/unoobj/drdefuno.cxx-48-    {
+sc/source/ui/unoobj/drdefuno.cxx-49-        pDocShell = nullptr;       // document gone
+sc/source/ui/unoobj/drdefuno.cxx-50-    }
+sc/source/ui/unoobj/drdefuno.cxx-51-}
+sc/source/ui/unoobj/drdefuno.cxx-52-
+sc/source/ui/unoobj/drdefuno.cxx:53:SfxItemPool* ScDrawDefaultsObj::getModelPool( bool bReadOnly ) noexcept
+sc/source/ui/unoobj/drdefuno.cxx-54-{
+sc/source/ui/unoobj/drdefuno.cxx:55:    SfxItemPool* pRet = nullptr;
+sc/source/ui/unoobj/drdefuno.cxx-56-
+sc/source/ui/unoobj/drdefuno.cxx-57-    try
+sc/source/ui/unoobj/drdefuno.cxx-58-    {
+sc/source/ui/unoobj/drdefuno.cxx-59-        if ( pDocShell )
+sc/source/ui/unoobj/drdefuno.cxx-60-        {
+--
+sc/source/ui/unoobj/editsrc.cxx-139-        {
+sc/source/ui/unoobj/editsrc.cxx-140-            pEditEngine.reset( new ScNoteEditEngine( pDocShell->GetDocument().GetNoteEngine() ) );
+sc/source/ui/unoobj/editsrc.cxx-141-        }
+sc/source/ui/unoobj/editsrc.cxx-142-        else
+sc/source/ui/unoobj/editsrc.cxx-143-        {
+sc/source/ui/unoobj/editsrc.cxx:144:            rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/unoobj/editsrc.cxx-145-            pEditEngine.reset( new ScEditEngineDefaulter( pEnginePool.get(), true ) );
+sc/source/ui/unoobj/editsrc.cxx-146-        }
+sc/source/ui/unoobj/editsrc.cxx-147-        pForwarder.reset( new SvxEditEngineForwarder(*pEditEngine) );
+sc/source/ui/unoobj/editsrc.cxx-148-    }
+sc/source/ui/unoobj/editsrc.cxx-149-
+--
+sc/source/ui/unoobj/textuno.cxx-161-
+sc/source/ui/unoobj/textuno.cxx-162-SvxTextForwarder* ScHeaderFooterTextData::GetTextForwarder()
+sc/source/ui/unoobj/textuno.cxx-163-{
+sc/source/ui/unoobj/textuno.cxx-164-    if (!pEditEngine)
+sc/source/ui/unoobj/textuno.cxx-165-    {
+sc/source/ui/unoobj/textuno.cxx:166:        rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/unoobj/textuno.cxx-167-        std::unique_ptr<ScHeaderEditEngine> pHdrEngine(new ScHeaderEditEngine( pEnginePool.get() ));
+sc/source/ui/unoobj/textuno.cxx-168-
+sc/source/ui/unoobj/textuno.cxx-169-        pHdrEngine->EnableUndo( false );
+sc/source/ui/unoobj/textuno.cxx-170-        pHdrEngine->SetRefMapMode(MapMode(MapUnit::MapTwip));
+sc/source/ui/unoobj/textuno.cxx-171-
+--
+sc/source/ui/unoobj/textuno.cxx-683-
+sc/source/ui/unoobj/textuno.cxx-684-UNO3_GETIMPLEMENTATION2_IMPL(ScDrawTextCursor, SvxUnoTextCursor);
+sc/source/ui/unoobj/textuno.cxx-685-
+sc/source/ui/unoobj/textuno.cxx-686-ScSimpleEditSourceHelper::ScSimpleEditSourceHelper()
+sc/source/ui/unoobj/textuno.cxx-687-{
+sc/source/ui/unoobj/textuno.cxx:688:    rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/unoobj/textuno.cxx-689-    pEnginePool->SetDefaultMetric( MapUnit::Map100thMM );
+sc/source/ui/unoobj/textuno.cxx-690-    pEditEngine.reset( new ScFieldEditEngine(nullptr, pEnginePool.get(), nullptr, true) );     // TRUE: become owner of pool
+sc/source/ui/unoobj/textuno.cxx-691-    pForwarder.reset( new SvxEditEngineForwarder( *pEditEngine ) );
+sc/source/ui/unoobj/textuno.cxx-692-    pOriginalSource.reset( new ScSimpleEditSource( pForwarder.get() ) );
+sc/source/ui/unoobj/textuno.cxx-693-}
+--
+sc/source/ui/unoobj/textuno.cxx-769-            ScDocument& rDoc = pDocShell->GetDocument();
+sc/source/ui/unoobj/textuno.cxx-770-            pEditEngine = rDoc.CreateFieldEditEngine();
+sc/source/ui/unoobj/textuno.cxx-771-        }
+sc/source/ui/unoobj/textuno.cxx-772-        else
+sc/source/ui/unoobj/textuno.cxx-773-        {
+sc/source/ui/unoobj/textuno.cxx:774:            rtl::Reference<SfxItemPool> pEnginePool = EditEngine::CreatePool();
+sc/source/ui/unoobj/textuno.cxx-775-            pEditEngine.reset( new ScFieldEditEngine(nullptr, pEnginePool.get(), nullptr, true) );
+sc/source/ui/unoobj/textuno.cxx-776-        }
+sc/source/ui/unoobj/textuno.cxx-777-        //  currently, GetPortions doesn't work if UpdateMode is sal_False,
+sc/source/ui/unoobj/textuno.cxx-778-        //  this will be fixed (in EditEngine) by src600
+sc/source/ui/unoobj/textuno.cxx-779-//      pEditEngine->SetUpdateMode( sal_False );
+--
+sc/source/ui/view/viewutil.cxx-51-                                sal_uInt16 nWhichId, SvtScriptType nScript )
+sc/source/ui/view/viewutil.cxx-52-{
+sc/source/ui/view/viewutil.cxx-53-    //  take the effective item from rCoreSet according to nScript
+sc/source/ui/view/viewutil.cxx-54-    //  and put in rShellSet under the (base) nWhichId
+sc/source/ui/view/viewutil.cxx-55-
+sc/source/ui/view/viewutil.cxx:56:    SfxItemPool& rPool = *rShellSet.GetPool();
+sc/source/ui/view/viewutil.cxx-57-    SvxScriptSetItem aSetItem( rPool.GetSlotId(nWhichId), rPool );
+sc/source/ui/view/viewutil.cxx-58-    //  use PutExtended with eDefaultAs = SfxItemState::SET, so defaults from rCoreSet
+sc/source/ui/view/viewutil.cxx-59-    //  (document pool) are read and put into rShellSet (MessagePool)
+sc/source/ui/view/viewutil.cxx-60-    aSetItem.GetItemSet().PutExtended( rCoreSet, SfxItemState::INVALID, SfxItemState::SET );
+sc/source/ui/view/viewutil.cxx-61-    const SfxPoolItem* pI = aSetItem.GetItemOfScript( nScript );
+--
+sc/source/ui/view/cellsh1.cxx-1912-        case SID_PASTE_UNFORMATTED:
+sc/source/ui/view/cellsh1.cxx-1913-        {
+sc/source/ui/view/cellsh1.cxx-1914-            weld::WaitObject aWait( GetViewData().GetDialogParent() );
+sc/source/ui/view/cellsh1.cxx-1915-            sal_uInt32 nUnformattedFormatId = static_cast<sal_uInt32>(SotClipboardFormatId::STRING);
+sc/source/ui/view/cellsh1.cxx-1916-
+sc/source/ui/view/cellsh1.cxx:1917:            SfxItemPool* pPool = this->GetPool(); // ScCellShell inherits GetPool() from SfxShell
+sc/source/ui/view/cellsh1.cxx-1918-
+sc/source/ui/view/cellsh1.cxx-1919-            if (pPool)
+sc/source/ui/view/cellsh1.cxx-1920-            {
+sc/source/ui/view/cellsh1.cxx-1921-                // Construct SfxRequest with SlotID, CallMode, and Pool.
+sc/source/ui/view/cellsh1.cxx-1922-                // This creates an internal SfxItemSet.
+--
+sc/source/ui/view/formatsh.cxx-489-                    // We have to accomplish this using ApplyAttributes()
+sc/source/ui/view/formatsh.cxx-490-                    // because we also need the language information to be
+sc/source/ui/view/formatsh.cxx-491-                    // considered.
+sc/source/ui/view/formatsh.cxx-492-                    const SfxItemSet& rOldSet =
+sc/source/ui/view/formatsh.cxx-493-                        pTabViewShell->GetSelectionPattern()->GetItemSet();
+sc/source/ui/view/formatsh.cxx:494:                    SfxItemPool* pDocPool = GetViewData().GetDocument().GetPool();
+sc/source/ui/view/formatsh.cxx-495-                    SfxItemSetFixed<ATTR_PATTERN_START, ATTR_PATTERN_END> aNewSet( *pDocPool );
+sc/source/ui/view/formatsh.cxx-496-                    aNewSet.Put( *pItem );
+sc/source/ui/view/formatsh.cxx-497-                    pTabViewShell->ApplyAttributes( aNewSet, rOldSet );
+sc/source/ui/view/formatsh.cxx-498-                }
+sc/source/ui/view/formatsh.cxx-499-            }
+--
+sc/source/ui/view/formatsh.cxx-671-            case SID_ATTR_CHAR_WEIGHT:
+sc/source/ui/view/formatsh.cxx-672-            {
+sc/source/ui/view/formatsh.cxx-673-                // #i78017 establish the same behaviour as in Writer
+sc/source/ui/view/formatsh.cxx-674-                SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/view/formatsh.cxx-675-
+sc/source/ui/view/formatsh.cxx:676:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/formatsh.cxx-677-                SvxScriptSetItem aSetItem( nSlot, rPool );
+sc/source/ui/view/formatsh.cxx-678-                if ( pSet )
+sc/source/ui/view/formatsh.cxx-679-                    aSetItem.PutItemForScriptType( nScript, pSet->Get( ATTR_FONT_WEIGHT ) );
+sc/source/ui/view/formatsh.cxx-680-                else
+sc/source/ui/view/formatsh.cxx-681-                {
+--
+sc/source/ui/view/formatsh.cxx-698-            case SID_ATTR_CHAR_POSTURE:
+sc/source/ui/view/formatsh.cxx-699-            {
+sc/source/ui/view/formatsh.cxx-700-                // #i78017 establish the same behaviour as in Writer
+sc/source/ui/view/formatsh.cxx-701-                SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/view/formatsh.cxx-702-
+sc/source/ui/view/formatsh.cxx:703:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/formatsh.cxx-704-                SvxScriptSetItem aSetItem( nSlot, rPool );
+sc/source/ui/view/formatsh.cxx-705-                if ( pSet )
+sc/source/ui/view/formatsh.cxx-706-                    aSetItem.PutItemForScriptType( nScript, pSet->Get( ATTR_FONT_POSTURE ) );
+sc/source/ui/view/formatsh.cxx-707-                else
+sc/source/ui/view/formatsh.cxx-708-                {
+--
+sc/source/ui/view/formatsh.cxx-900-        switch ( nSlot )
+sc/source/ui/view/formatsh.cxx-901-        {
+sc/source/ui/view/formatsh.cxx-902-            case SID_GROW_FONT_SIZE:
+sc/source/ui/view/formatsh.cxx-903-            case SID_SHRINK_FONT_SIZE:
+sc/source/ui/view/formatsh.cxx-904-            {
+sc/source/ui/view/formatsh.cxx:905:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/formatsh.cxx-906-                SvxScriptSetItem aSetItem( SID_ATTR_CHAR_FONTHEIGHT, rPool );
+sc/source/ui/view/formatsh.cxx-907-                aSetItem.GetItemSet().Put( pTabViewShell->GetSelectionPattern()->GetItemSet(), false );
+sc/source/ui/view/formatsh.cxx-908-
+sc/source/ui/view/formatsh.cxx-909-                SvtScriptType nScriptTypes = pTabViewShell->GetSelectionScriptType();
+sc/source/ui/view/formatsh.cxx-910-                const SvxFontHeightItem* pSize( static_cast<const SvxFontHeightItem*>( aSetItem.GetItemOfScript( nScriptTypes ) ) );
+--
+sc/source/ui/view/formatsh.cxx-991-    {
+sc/source/ui/view/formatsh.cxx-992-        switch ( nSlot )
+sc/source/ui/view/formatsh.cxx-993-        {
+sc/source/ui/view/formatsh.cxx-994-            case SID_ATTR_CHAR_PREVIEW_FONT:
+sc/source/ui/view/formatsh.cxx-995-            {
+sc/source/ui/view/formatsh.cxx:996:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/formatsh.cxx-997-                sal_uInt16 nWhich = rPool.GetWhichIDFromSlotID( nSlot );
+sc/source/ui/view/formatsh.cxx-998-                const SvxFontItem& rFont = static_cast<const SvxFontItem&>(pNewAttrs->Get( nWhich ));
+sc/source/ui/view/formatsh.cxx-999-                SvxScriptSetItem aSetItem( SID_ATTR_CHAR_FONT, rPool );
+sc/source/ui/view/formatsh.cxx-1000-                SvtScriptType nScript = pTabViewShell->GetSelectionScriptType();
+sc/source/ui/view/formatsh.cxx-1001-                aSetItem.PutItemForScriptType( nScript, rFont );
+--
+sc/source/ui/view/formatsh.cxx-1044-                    // #i78017 establish the same behaviour as in Writer
+sc/source/ui/view/formatsh.cxx-1045-                    SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/view/formatsh.cxx-1046-                    if (nSlot == SID_ATTR_CHAR_FONT)
+sc/source/ui/view/formatsh.cxx-1047-                        nScript = pTabViewShell->GetSelectionScriptType();
+sc/source/ui/view/formatsh.cxx-1048-
+sc/source/ui/view/formatsh.cxx:1049:                    SfxItemPool& rPool = GetPool();
+sc/source/ui/view/formatsh.cxx-1050-                    SvxScriptSetItem aSetItem( nSlot, rPool );
+sc/source/ui/view/formatsh.cxx-1051-                    sal_uInt16 nWhich = rPool.GetWhichIDFromSlotID( nSlot );
+sc/source/ui/view/formatsh.cxx-1052-                    aSetItem.PutItemForScriptType( nScript, pNewAttrs->Get( nWhich ) );
+sc/source/ui/view/formatsh.cxx-1053-
+sc/source/ui/view/formatsh.cxx-1054-                    pTabViewShell->ApplyUserItemSet( aSetItem.GetItemSet() );
+--
+sc/source/ui/view/spelleng.cxx-45-#include <memory>
+sc/source/ui/view/spelleng.cxx-46-
+sc/source/ui/view/spelleng.cxx-47-using namespace ::com::sun::star;
+sc/source/ui/view/spelleng.cxx-48-
+sc/source/ui/view/spelleng.cxx-49-ScConversionEngineBase::ScConversionEngineBase(
+sc/source/ui/view/spelleng.cxx:50:        SfxItemPool* pEnginePoolP, ScViewData& rViewData,
+sc/source/ui/view/spelleng.cxx-51-        ScDocument* pUndoDoc, ScDocument* pRedoDoc ) :
+sc/source/ui/view/spelleng.cxx-52-    ScEditEngineDefaulter( pEnginePoolP ),
+sc/source/ui/view/spelleng.cxx-53-    mrViewData( rViewData ),
+sc/source/ui/view/spelleng.cxx-54-    mrDocShell( rViewData.GetDocShell() ),
+sc/source/ui/view/spelleng.cxx-55-    mrDoc( rViewData.GetDocShell().GetDocument() ),
+--
+sc/source/ui/view/spelleng.cxx-297-            SetTextCurrentDefaults(OUString());
+sc/source/ui/view/spelleng.cxx-298-    }
+sc/source/ui/view/spelleng.cxx-299-}
+sc/source/ui/view/spelleng.cxx-300-
+sc/source/ui/view/spelleng.cxx-301-ScSpellingEngine::ScSpellingEngine(
+sc/source/ui/view/spelleng.cxx:302:        SfxItemPool* pEnginePoolP, ScViewData& rViewData,
+sc/source/ui/view/spelleng.cxx-303-        ScDocument* pUndoDoc, ScDocument* pRedoDoc,
+sc/source/ui/view/spelleng.cxx-304-        css::uno::Reference< css::linguistic2::XSpellChecker1 > const & xSpeller ) :
+sc/source/ui/view/spelleng.cxx-305-    ScConversionEngineBase( pEnginePoolP, rViewData, pUndoDoc, pRedoDoc )
+sc/source/ui/view/spelleng.cxx-306-{
+sc/source/ui/view/spelleng.cxx-307-    SetSpeller( xSpeller );
+--
+sc/source/ui/view/spelleng.cxx-410-    if (LANGUAGE_KOREAN == meSourceLang && LANGUAGE_KOREAN == meTargetLang)
+sc/source/ui/view/spelleng.cxx-411-        mnOptions = i18n::TextConversionOption::CHARACTER_BY_CHARACTER;
+sc/source/ui/view/spelleng.cxx-412-}
+sc/source/ui/view/spelleng.cxx-413-
+sc/source/ui/view/spelleng.cxx-414-ScTextConversionEngine::ScTextConversionEngine(
+sc/source/ui/view/spelleng.cxx:415:        SfxItemPool* pEnginePoolP, ScViewData& rViewData,
+sc/source/ui/view/spelleng.cxx-416-        ScConversionParam aConvParam,
+sc/source/ui/view/spelleng.cxx-417-        ScDocument* pUndoDoc, ScDocument* pRedoDoc ) :
+sc/source/ui/view/spelleng.cxx-418-    ScConversionEngineBase( pEnginePoolP, rViewData, pUndoDoc, pRedoDoc ),
+sc/source/ui/view/spelleng.cxx-419-    maConvParam(std::move( aConvParam ))
+sc/source/ui/view/spelleng.cxx-420-{
+--
+sc/source/ui/view/editsh.cxx-1015-                    {
+sc/source/ui/view/editsh.cxx-1016-                        nScript = pEditView->GetSelectedScriptType();
+sc/source/ui/view/editsh.cxx-1017-                        if (nScript == SvtScriptType::NONE) nScript = ScGlobal::GetDefaultScriptType();
+sc/source/ui/view/editsh.cxx-1018-                    }
+sc/source/ui/view/editsh.cxx-1019-
+sc/source/ui/view/editsh.cxx:1020:                    SfxItemPool& rPool = GetPool();
+sc/source/ui/view/editsh.cxx-1021-                    SvxScriptSetItem aSetItem( nSlot, rPool );
+sc/source/ui/view/editsh.cxx-1022-                    sal_uInt16 nWhich = rPool.GetWhichIDFromSlotID( nSlot );
+sc/source/ui/view/editsh.cxx-1023-                    aSetItem.PutItemForScriptType( nScript, pArgs->Get( nWhich ) );
+sc/source/ui/view/editsh.cxx-1024-
+sc/source/ui/view/editsh.cxx-1025-                    aSet.Put( aSetItem.GetItemSet(), false );
+--
+sc/source/ui/view/editsh.cxx-1054-        case SID_ATTR_CHAR_WEIGHT:
+sc/source/ui/view/editsh.cxx-1055-            {
+sc/source/ui/view/editsh.cxx-1056-                // #i78017 establish the same behaviour as in Writer
+sc/source/ui/view/editsh.cxx-1057-                SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/view/editsh.cxx-1058-
+sc/source/ui/view/editsh.cxx:1059:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/editsh.cxx-1060-
+sc/source/ui/view/editsh.cxx-1061-                bool bOld = false;
+sc/source/ui/view/editsh.cxx-1062-                SvxScriptSetItem aOldSetItem( nSlot, rPool );
+sc/source/ui/view/editsh.cxx-1063-                aOldSetItem.GetItemSet().Put( pEditView->GetAttribs(), false );
+sc/source/ui/view/editsh.cxx-1064-                const SfxPoolItem* pCore = aOldSetItem.GetItemOfScript( nScript );
+--
+sc/source/ui/view/editsh.cxx-1077-        case SID_ATTR_CHAR_POSTURE:
+sc/source/ui/view/editsh.cxx-1078-            {
+sc/source/ui/view/editsh.cxx-1079-                // #i78017 establish the same behaviour as in Writer
+sc/source/ui/view/editsh.cxx-1080-                SvtScriptType nScript = SvtScriptType::LATIN | SvtScriptType::ASIAN | SvtScriptType::COMPLEX;
+sc/source/ui/view/editsh.cxx-1081-
+sc/source/ui/view/editsh.cxx:1082:                SfxItemPool& rPool = GetPool();
+sc/source/ui/view/editsh.cxx-1083-
+sc/source/ui/view/editsh.cxx-1084-                bool bOld = false;
+sc/source/ui/view/editsh.cxx-1085-                SvxScriptSetItem aOldSetItem( nSlot, rPool );
+sc/source/ui/view/editsh.cxx-1086-                aOldSetItem.GetItemSet().Put( pEditView->GetAttribs(), false );
+sc/source/ui/view/editsh.cxx-1087-                const SfxPoolItem* pCore = aOldSetItem.GetItemOfScript( nScript );
+--
+sc/source/ui/view/tabvwsha.cxx-1776-    sal_uInt16          nWhich = aIter.FirstWhich();
+sc/source/ui/view/tabvwsha.cxx-1777-    sal_uInt16          nSlotId = 0;
+sc/source/ui/view/tabvwsha.cxx-1778-
+sc/source/ui/view/tabvwsha.cxx-1779-    while ( nWhich )
+sc/source/ui/view/tabvwsha.cxx-1780-    {
+sc/source/ui/view/tabvwsha.cxx:1781:        nSlotId = SfxItemPool::IsWhich( nWhich )
+sc/source/ui/view/tabvwsha.cxx-1782-                    ? GetPool().GetSlotId( nWhich )
+sc/source/ui/view/tabvwsha.cxx-1783-                    : nWhich;
+sc/source/ui/view/tabvwsha.cxx-1784-
+sc/source/ui/view/tabvwsha.cxx-1785-        switch ( nSlotId )
+sc/source/ui/view/tabvwsha.cxx-1786-        {
+--
+sc/source/ui/docshell/docsh4.cxx-1225-                    {
+sc/source/ui/docshell/docsh4.cxx-1226-                        const ScPatternAttr* pSelAttrs = pViewShell->GetSelectionPattern();
+sc/source/ui/docshell/docsh4.cxx-1227-                        if (pSelAttrs)
+sc/source/ui/docshell/docsh4.cxx-1228-                        {
+sc/source/ui/docshell/docsh4.cxx-1229-                            const SfxItemSet& rOldSet = pSelAttrs->GetItemSet();
+sc/source/ui/docshell/docsh4.cxx:1230:                            SfxItemPool* pItemPool = rOldSet.GetPool();
+sc/source/ui/docshell/docsh4.cxx-1231-                            auto pNewSet = std::make_shared<SfxItemSet>(*pItemPool);
+sc/source/ui/docshell/docsh4.cxx-1232-
+sc/source/ui/docshell/docsh4.cxx-1233-                            if (aLangText == "LANGUAGE_NONE")
+sc/source/ui/docshell/docsh4.cxx-1234-                            {
+sc/source/ui/docshell/docsh4.cxx-1235-                                pNewSet->Put(SvxLanguageItem(LANGUAGE_NONE,
+--
+sc/source/ui/app/uiitems.cxx-66-             && (aCursorPos == static_cast<const ScInputStatusItem&>(rItem).aCursorPos)
+sc/source/ui/app/uiitems.cxx-67-             && (aString    == static_cast<const ScInputStatusItem&>(rItem).aString);
+sc/source/ui/app/uiitems.cxx-68-             //TODO: Compare Edit data!
+sc/source/ui/app/uiitems.cxx-69-}
+sc/source/ui/app/uiitems.cxx-70-
+sc/source/ui/app/uiitems.cxx:71:ScInputStatusItem* ScInputStatusItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-72-{
+sc/source/ui/app/uiitems.cxx-73-    return new ScInputStatusItem( *this );
+sc/source/ui/app/uiitems.cxx-74-}
+sc/source/ui/app/uiitems.cxx-75-
+sc/source/ui/app/uiitems.cxx-76-void ScInputStatusItem::SetMisspellRanges( const sc::MisspellRangeResult& rRanges )
+--
+sc/source/ui/app/uiitems.cxx-139-
+sc/source/ui/app/uiitems.cxx-140-    return (   (pViewData   == rOther.pViewData)
+sc/source/ui/app/uiitems.cxx-141-            && (theSortData == rOther.theSortData) );
+sc/source/ui/app/uiitems.cxx-142-}
+sc/source/ui/app/uiitems.cxx-143-
+sc/source/ui/app/uiitems.cxx:144:ScSortItem* ScSortItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-145-{
+sc/source/ui/app/uiitems.cxx-146-    return new ScSortItem( *this );
+sc/source/ui/app/uiitems.cxx-147-}
+sc/source/ui/app/uiitems.cxx-148-
+sc/source/ui/app/uiitems.cxx-149-bool ScSortItem::QueryValue( css::uno::Any& rVal, sal_uInt8 /* nMemberUd */ ) const
+--
+sc/source/ui/app/uiitems.cxx-210-    return ( (bIsAdvanced  == rQueryItem.bIsAdvanced)
+sc/source/ui/app/uiitems.cxx-211-            && (aAdvSource   == rQueryItem.aAdvSource)
+sc/source/ui/app/uiitems.cxx-212-            && (*mpQueryData == *rQueryItem.mpQueryData) );
+sc/source/ui/app/uiitems.cxx-213-}
+sc/source/ui/app/uiitems.cxx-214-
+sc/source/ui/app/uiitems.cxx:215:ScQueryItem* ScQueryItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-216-{
+sc/source/ui/app/uiitems.cxx-217-    return new ScQueryItem( *this );
+sc/source/ui/app/uiitems.cxx-218-}
+sc/source/ui/app/uiitems.cxx-219-
+sc/source/ui/app/uiitems.cxx-220-/**
+--
+sc/source/ui/app/uiitems.cxx-237-
+sc/source/ui/app/uiitems.cxx-238-    return (   (pViewData       == rSTItem.pViewData)
+sc/source/ui/app/uiitems.cxx-239-            && (theSubTotalData == rSTItem.theSubTotalData) );
+sc/source/ui/app/uiitems.cxx-240-}
+sc/source/ui/app/uiitems.cxx-241-
+sc/source/ui/app/uiitems.cxx:242:ScSubTotalItem* ScSubTotalItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-243-{
+sc/source/ui/app/uiitems.cxx-244-    return new ScSubTotalItem( *this );
+sc/source/ui/app/uiitems.cxx-245-}
+sc/source/ui/app/uiitems.cxx-246-
+sc/source/ui/app/uiitems.cxx-247-bool ScSubTotalItem::QueryValue( css::uno::Any& rVal, sal_uInt8 /* nMemberUd */ ) const
+--
+sc/source/ui/app/uiitems.cxx-283-        bEqual = ( *pUserList == *(r.pUserList) );
+sc/source/ui/app/uiitems.cxx-284-
+sc/source/ui/app/uiitems.cxx-285-    return bEqual;
+sc/source/ui/app/uiitems.cxx-286-}
+sc/source/ui/app/uiitems.cxx-287-
+sc/source/ui/app/uiitems.cxx:288:ScUserListItem* ScUserListItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-289-{
+sc/source/ui/app/uiitems.cxx-290-    return new ScUserListItem( *this );
+sc/source/ui/app/uiitems.cxx-291-}
+sc/source/ui/app/uiitems.cxx-292-
+sc/source/ui/app/uiitems.cxx-293-void ScUserListItem::SetUserList( const ScUserList& rUserList )
+--
+sc/source/ui/app/uiitems.cxx-313-    const ScConsolidateItem& rCItem = static_cast<const ScConsolidateItem&>(rItem);
+sc/source/ui/app/uiitems.cxx-314-
+sc/source/ui/app/uiitems.cxx-315-    return ( theConsData == rCItem.theConsData);
+sc/source/ui/app/uiitems.cxx-316-}
+sc/source/ui/app/uiitems.cxx-317-
+sc/source/ui/app/uiitems.cxx:318:ScConsolidateItem* ScConsolidateItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-319-{
+sc/source/ui/app/uiitems.cxx-320-    return new ScConsolidateItem( *this );
+sc/source/ui/app/uiitems.cxx-321-}
+sc/source/ui/app/uiitems.cxx-322-
+sc/source/ui/app/uiitems.cxx-323-/**
+--
+sc/source/ui/app/uiitems.cxx-358-    return ( *pSaveData == *rPItem.pSaveData &&
+sc/source/ui/app/uiitems.cxx-359-             aDestRange == rPItem.aDestRange &&
+sc/source/ui/app/uiitems.cxx-360-             bNewSheet  == rPItem.bNewSheet );
+sc/source/ui/app/uiitems.cxx-361-}
+sc/source/ui/app/uiitems.cxx-362-
+sc/source/ui/app/uiitems.cxx:363:ScPivotItem* ScPivotItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-364-{
+sc/source/ui/app/uiitems.cxx-365-    return new ScPivotItem( *this );
+sc/source/ui/app/uiitems.cxx-366-}
+sc/source/ui/app/uiitems.cxx-367-
+sc/source/ui/app/uiitems.cxx-368-/**
+--
+sc/source/ui/app/uiitems.cxx-382-    const ScSolveItem& rPItem = static_cast<const ScSolveItem&>(rItem);
+sc/source/ui/app/uiitems.cxx-383-
+sc/source/ui/app/uiitems.cxx-384-    return ( theSolveData == rPItem.theSolveData );
+sc/source/ui/app/uiitems.cxx-385-}
+sc/source/ui/app/uiitems.cxx-386-
+sc/source/ui/app/uiitems.cxx:387:ScSolveItem* ScSolveItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-388-{
+sc/source/ui/app/uiitems.cxx-389-    return new ScSolveItem( *this );
+sc/source/ui/app/uiitems.cxx-390-}
+sc/source/ui/app/uiitems.cxx-391-
+sc/source/ui/app/uiitems.cxx-392-/**
+--
+sc/source/ui/app/uiitems.cxx-406-    const ScTabOpItem& rPItem = static_cast<const ScTabOpItem&>(rItem);
+sc/source/ui/app/uiitems.cxx-407-
+sc/source/ui/app/uiitems.cxx-408-    return ( theTabOpData == rPItem.theTabOpData );
+sc/source/ui/app/uiitems.cxx-409-}
+sc/source/ui/app/uiitems.cxx-410-
+sc/source/ui/app/uiitems.cxx:411:ScTabOpItem* ScTabOpItem::Clone( SfxItemPool * ) const
+sc/source/ui/app/uiitems.cxx-412-{
+sc/source/ui/app/uiitems.cxx-413-    return new ScTabOpItem( *this );
+sc/source/ui/app/uiitems.cxx-414-}
+sc/source/ui/app/uiitems.cxx-415-
+sc/source/ui/app/uiitems.cxx-416-/* vim:set shiftwidth=4 softtabstop=4 expandtab: */
+--
+sc/source/ui/app/msgpool.cxx-43-
+sc/source/ui/app/msgpool.cxx-44-        virtual const ItemInfoStatic& getItemInfoStatic(size_t nIndex) const override { return maItemInfos[nIndex]; }
+sc/source/ui/app/msgpool.cxx-45-
+sc/source/ui/app/msgpool.cxx-46-    public:
+sc/source/ui/app/msgpool.cxx-47-        virtual size_t size() const override { return maItemInfos.size(); }
+sc/source/ui/app/msgpool.cxx:48:        virtual const ItemInfo& getItemInfo(size_t nIndex, SfxItemPool& /*rPool*/) override { return maItemInfos[nIndex]; }
+sc/source/ui/app/msgpool.cxx-49-    };
+sc/source/ui/app/msgpool.cxx-50-
+sc/source/ui/app/msgpool.cxx-51-    static std::unique_ptr<ItemInfoPackageScMessage> g_aItemInfoPackageScMessage;
+sc/source/ui/app/msgpool.cxx-52-    if (!g_aItemInfoPackageScMessage)
+sc/source/ui/app/msgpool.cxx-53-        g_aItemInfoPackageScMessage.reset(new ItemInfoPackageScMessage);
+sc/source/ui/app/msgpool.cxx-54-    return *g_aItemInfoPackageScMessage;
+sc/source/ui/app/msgpool.cxx-55-}
+sc/source/ui/app/msgpool.cxx-56-
+sc/source/ui/app/msgpool.cxx-57-ScMessagePool::ScMessagePool()
+sc/source/ui/app/msgpool.cxx:58:: SfxItemPool(u"ScMessagePool"_ustr),
+sc/source/ui/app/msgpool.cxx-59-    pDocPool(new ScDocumentPool)
+sc/source/ui/app/msgpool.cxx-60-{
+sc/source/ui/app/msgpool.cxx-61-    registerItemInfoPackage(getItemInfoPackageScMessage());
+sc/source/ui/app/msgpool.cxx-62-
+sc/source/ui/app/msgpool.cxx-63-    SetSecondaryPool( pDocPool.get() );
+--
+sc/source/ui/app/drwtrans.cxx-434-                pDrawModel->BurnInStyleSheetAttributes();
+sc/source/ui/app/drwtrans.cxx-435-                rOStm.SetBufferSize( 0xff00 );
+sc/source/ui/app/drwtrans.cxx-436-
+sc/source/ui/app/drwtrans.cxx-437-                // for the changed pool defaults from drawing layer pool set those
+sc/source/ui/app/drwtrans.cxx-438-                // attributes as hard attributes to preserve them for saving
+sc/source/ui/app/drwtrans.cxx:439:                const SfxItemPool& rItemPool = pDrawModel->GetItemPool();
+sc/source/ui/app/drwtrans.cxx-440-                const SvxFontHeightItem& rDefaultFontHeight = rItemPool.GetUserOrPoolDefaultItem(EE_CHAR_FONTHEIGHT);
+sc/source/ui/app/drwtrans.cxx-441-
+sc/source/ui/app/drwtrans.cxx-442-                // SW should have no MasterPages
+sc/source/ui/app/drwtrans.cxx-443-                OSL_ENSURE(0 == pDrawModel->GetMasterPageCount(), "SW with MasterPages (!)");
+sc/source/ui/app/drwtrans.cxx-444-
+--
+sc/source/filter/xml/xmlfonte.cxx-34-
+sc/source/filter/xml/xmlfonte.cxx-35-class ScXMLFontAutoStylePool_Impl: public XMLFontAutoStylePool
+sc/source/filter/xml/xmlfonte.cxx-36-{
+sc/source/filter/xml/xmlfonte.cxx-37-private:
+sc/source/filter/xml/xmlfonte.cxx-38-    // #i120077# remember owned pool
+sc/source/filter/xml/xmlfonte.cxx:39:    rtl::Reference<SfxItemPool>  mpEditEnginePool;
+sc/source/filter/xml/xmlfonte.cxx-40-
+sc/source/filter/xml/xmlfonte.cxx:41:    void AddFontItems(const sal_uInt16* pWhichIds, sal_uInt8 nIdCount, const SfxItemPool* pItemPool, const bool bExportDefaults);
+sc/source/filter/xml/xmlfonte.cxx-42-
+sc/source/filter/xml/xmlfonte.cxx-43-public:
+sc/source/filter/xml/xmlfonte.cxx-44-    ScXMLFontAutoStylePool_Impl(ScDocument* pDoc, ScXMLExport& rExport);
+sc/source/filter/xml/xmlfonte.cxx-45-};
+sc/source/filter/xml/xmlfonte.cxx-46-
+sc/source/filter/xml/xmlfonte.cxx-47-}
+sc/source/filter/xml/xmlfonte.cxx-48-
+sc/source/filter/xml/xmlfonte.cxx:49:void ScXMLFontAutoStylePool_Impl::AddFontItems(const sal_uInt16* pWhichIds, sal_uInt8 nIdCount, const SfxItemPool* pItemPool, const bool bExportDefaults)
+sc/source/filter/xml/xmlfonte.cxx-50-{
+sc/source/filter/xml/xmlfonte.cxx-51-    for( sal_uInt16 i=0; i < nIdCount; ++i )
+sc/source/filter/xml/xmlfonte.cxx-52-    {
+sc/source/filter/xml/xmlfonte.cxx-53-        sal_uInt16 nWhichId(pWhichIds[i]);
+sc/source/filter/xml/xmlfonte.cxx-54-        if (bExportDefaults)
+--
+sc/source/filter/xml/xmlfonte.cxx-81-                                       EE_CHAR_FONTINFO_CTL };
+sc/source/filter/xml/xmlfonte.cxx-82-    sal_uInt16 const aPageWhichIds[] { ATTR_PAGE_HEADERLEFT, ATTR_PAGE_FOOTERLEFT,
+sc/source/filter/xml/xmlfonte.cxx-83-                                       ATTR_PAGE_HEADERRIGHT, ATTR_PAGE_FOOTERRIGHT,
+sc/source/filter/xml/xmlfonte.cxx-84-                                       ATTR_PAGE_HEADERFIRST, ATTR_PAGE_FOOTERFIRST };
+sc/source/filter/xml/xmlfonte.cxx-85-
+sc/source/filter/xml/xmlfonte.cxx:86:    const SfxItemPool* pItemPool(pDoc->GetPool());
+sc/source/filter/xml/xmlfonte.cxx-87-    AddFontItems(aWhichIds, 3, pItemPool, true);
+sc/source/filter/xml/xmlfonte.cxx:88:    const SfxItemPool* pEditPool(pDoc->GetEditPool());
+sc/source/filter/xml/xmlfonte.cxx-89-    AddFontItems(aEditWhichIds, 3, pEditPool, false);
+sc/source/filter/xml/xmlfonte.cxx-90-
+sc/source/filter/xml/xmlfonte.cxx-91-    std::unique_ptr<SfxStyleSheetIterator> pItr = pDoc->GetStyleSheetPool()->CreateIterator(SfxStyleFamily::Page);
+sc/source/filter/xml/xmlfonte.cxx-92-
+sc/source/filter/xml/xmlfonte.cxx-93-    if(!pItr)
+--
+sc/source/filter/xml/xmlfonte.cxx-96-    SfxStyleSheetBase* pStyle(pItr->First());
+sc/source/filter/xml/xmlfonte.cxx-97-
+sc/source/filter/xml/xmlfonte.cxx-98-    if(!pStyle)
+sc/source/filter/xml/xmlfonte.cxx-99-        return;
+sc/source/filter/xml/xmlfonte.cxx-100-
+sc/source/filter/xml/xmlfonte.cxx:101:    // #i120077# remember the SfxItemPool in member variable before usage. The
+sc/source/filter/xml/xmlfonte.cxx-102-    // local EditEngine will not take over ownership of the pool.
+sc/source/filter/xml/xmlfonte.cxx-103-    mpEditEnginePool = EditEngine::CreatePool();
+sc/source/filter/xml/xmlfonte.cxx-104-    EditEngine aEditEngine(mpEditEnginePool.get());
+sc/source/filter/xml/xmlfonte.cxx-105-
+sc/source/filter/xml/xmlfonte.cxx-106-    while (pStyle)
+sc/source/filter/xml/xmlfonte.cxx-107-    {
+sc/source/filter/xml/xmlfonte.cxx:108:        const SfxItemPool& rPagePool(pStyle->GetPool()->GetPool());
+sc/source/filter/xml/xmlfonte.cxx-109-
+sc/source/filter/xml/xmlfonte.cxx-110-        for (sal_uInt16 nPageWhichId : aPageWhichIds)
+sc/source/filter/xml/xmlfonte.cxx-111-        {
+sc/source/filter/xml/xmlfonte.cxx-112-            for (const SfxPoolItem* pItem : rPagePool.GetItemSurrogates(nPageWhichId))
+sc/source/filter/xml/xmlfonte.cxx-113-            {
+--
+sc/source/filter/xml/xmlcelli.cxx-1126-                    mpEditEngine->QuickSetAttribs(rxFormat->maItemSet, rxFormat->maSelection);
+sc/source/filter/xml/xmlcelli.cxx-1127-
+sc/source/filter/xml/xmlcelli.cxx-1128-                for (const auto& rxField : maFields)
+sc/source/filter/xml/xmlcelli.cxx-1129-                    mpEditEngine->QuickInsertField(SvxFieldItem(*rxField->mpData, EE_FEATURE_FIELD), rxField->maSelection);
+sc/source/filter/xml/xmlcelli.cxx-1130-
+sc/source/filter/xml/xmlcelli.cxx:1131:                // This edit engine uses the SfxItemPool instance returned
+sc/source/filter/xml/xmlcelli.cxx-1132-                // from pDoc->GetEditPool() to create the text object, which
+sc/source/filter/xml/xmlcelli.cxx-1133-                // is a prerequisite for using this constructor of ScEditCell.
+sc/source/filter/xml/xmlcelli.cxx-1134-                rDoc.setEditCell(rCurrentPos, mpEditEngine->CreateTextObject());
+sc/source/filter/xml/xmlcelli.cxx-1135-            }
+sc/source/filter/xml/xmlcelli.cxx-1136-        }
+--
+sc/source/filter/xml/xmlexprt.cxx-5374-    if (!pNumberFormatAttributesExportHelper)
+sc/source/filter/xml/xmlexprt.cxx-5375-        pNumberFormatAttributesExportHelper.reset(new XMLNumberFormatAttributesExportHelper(GetNumberFormatsSupplier(), *this ));
+sc/source/filter/xml/xmlexprt.cxx-5376-    return pNumberFormatAttributesExportHelper.get();
+sc/source/filter/xml/xmlexprt.cxx-5377-}
+sc/source/filter/xml/xmlexprt.cxx-5378-
+sc/source/filter/xml/xmlexprt.cxx:5379:void ScXMLExport::CollectUserDefinedNamespaces(const SfxItemPool* pPool, sal_uInt16 nAttrib)
+sc/source/filter/xml/xmlexprt.cxx-5380-{
+sc/source/filter/xml/xmlexprt.cxx-5381-    for (const SfxPoolItem* pItem : pPool->GetItemSurrogates(nAttrib))
+sc/source/filter/xml/xmlexprt.cxx-5382-    {
+sc/source/filter/xml/xmlexprt.cxx-5383-        const SvXMLAttrContainerItem *pUnknown(static_cast<const SvXMLAttrContainerItem *>(pItem));
+sc/source/filter/xml/xmlexprt.cxx-5384-        if( pUnknown->GetAttrCount() > 0 )
+--
+sc/source/filter/html/htmlpars.cxx-2040-
+sc/source/filter/html/htmlpars.cxx-2041-    CreateNewEntry( rInfo );
+sc/source/filter/html/htmlpars.cxx-2042-}
+sc/source/filter/html/htmlpars.cxx-2043-
+sc/source/filter/html/htmlpars.cxx-2044-ScHTMLTable::ScHTMLTable(
+sc/source/filter/html/htmlpars.cxx:2045:    SfxItemPool& rPool,
+sc/source/filter/html/htmlpars.cxx-2046-    EditEngine& rEditEngine,
+sc/source/filter/html/htmlpars.cxx-2047-    std::vector<std::shared_ptr<ScEEParseEntry>>& rEEParseList,
+sc/source/filter/html/htmlpars.cxx-2048-    ScHTMLTableId& rnUnusedId, ScHTMLParser* pParser, const ScDocument& rDoc
+sc/source/filter/html/htmlpars.cxx-2049-) :
+sc/source/filter/html/htmlpars.cxx-2050-    mpParentTable( nullptr ),
+--
+sc/source/filter/html/htmlpars.cxx-2936-        }
+sc/source/filter/html/htmlpars.cxx-2937-    }
+sc/source/filter/html/htmlpars.cxx-2938-}
+sc/source/filter/html/htmlpars.cxx-2939-
+sc/source/filter/html/htmlpars.cxx-2940-ScHTMLGlobalTable::ScHTMLGlobalTable(
+sc/source/filter/html/htmlpars.cxx:2941:    SfxItemPool& rPool,
+sc/source/filter/html/htmlpars.cxx-2942-    EditEngine& rEditEngine,
+sc/source/filter/html/htmlpars.cxx-2943-    std::vector<std::shared_ptr<ScEEParseEntry>>& rEEParseVector,
+sc/source/filter/html/htmlpars.cxx-2944-    ScHTMLTableId& rnUnusedId,
+sc/source/filter/html/htmlpars.cxx-2945-    ScHTMLParser* pParser,
+sc/source/filter/html/htmlpars.cxx-2946-    const ScDocument& rDoc
+--
+sc/source/core/tool/docoptio.cxx-122-    const ScTpCalcItem& rPItem = static_cast<const ScTpCalcItem&>(rItem);
+sc/source/core/tool/docoptio.cxx-123-
+sc/source/core/tool/docoptio.cxx-124-    return ( theOptions == rPItem.theOptions );
+sc/source/core/tool/docoptio.cxx-125-}
+sc/source/core/tool/docoptio.cxx-126-
+sc/source/core/tool/docoptio.cxx:127:ScTpCalcItem* ScTpCalcItem::Clone( SfxItemPool * ) const
+sc/source/core/tool/docoptio.cxx-128-{
+sc/source/core/tool/docoptio.cxx-129-    return new ScTpCalcItem( *this );
+sc/source/core/tool/docoptio.cxx-130-}
+sc/source/core/tool/docoptio.cxx-131-
+sc/source/core/tool/docoptio.cxx-132-//  Config Item containing document options
+--
+sc/source/core/tool/printopt.cxx-63-
+sc/source/core/tool/printopt.cxx-64-    const ScTpPrintItem& rPItem = static_cast<const ScTpPrintItem&>(rItem);
+sc/source/core/tool/printopt.cxx-65-    return ( theOptions == rPItem.theOptions );
+sc/source/core/tool/printopt.cxx-66-}
+sc/source/core/tool/printopt.cxx-67-
+sc/source/core/tool/printopt.cxx:68:ScTpPrintItem* ScTpPrintItem::Clone( SfxItemPool * ) const
+sc/source/core/tool/printopt.cxx-69-{
+sc/source/core/tool/printopt.cxx-70-    return new ScTpPrintItem( *this );
+sc/source/core/tool/printopt.cxx-71-}
+sc/source/core/tool/printopt.cxx-72-
+sc/source/core/tool/printopt.cxx-73-constexpr OUStringLiteral CFGPATH_PRINT = u"Office.Calc/Print";
+--
+sc/source/core/tool/editutil.cxx-507-
+sc/source/core/tool/editutil.cxx-508-ScEditAttrTester::~ScEditAttrTester()
+sc/source/core/tool/editutil.cxx-509-{
+sc/source/core/tool/editutil.cxx-510-}
+sc/source/core/tool/editutil.cxx-511-
+sc/source/core/tool/editutil.cxx:512:ScEnginePoolHelper::ScEnginePoolHelper( SfxItemPool* pEnginePoolP,
+sc/source/core/tool/editutil.cxx-513-                bool bDeleteEnginePoolP )
+sc/source/core/tool/editutil.cxx-514-            :
+sc/source/core/tool/editutil.cxx-515-            m_pEnginePool( pEnginePoolP ),
+sc/source/core/tool/editutil.cxx-516-            m_bDeleteEnginePool( bDeleteEnginePoolP )
+sc/source/core/tool/editutil.cxx-517-{
+--
+sc/source/core/tool/editutil.cxx-526-
+sc/source/core/tool/editutil.cxx-527-ScEnginePoolHelper::~ScEnginePoolHelper()
+sc/source/core/tool/editutil.cxx-528-{
+sc/source/core/tool/editutil.cxx-529-}
+sc/source/core/tool/editutil.cxx-530-
+sc/source/core/tool/editutil.cxx:531:ScEditEngineDefaulter::ScEditEngineDefaulter( SfxItemPool* pEnginePoolP,
+sc/source/core/tool/editutil.cxx-532-                bool bDeleteEnginePoolP )
+sc/source/core/tool/editutil.cxx-533-            :
+sc/source/core/tool/editutil.cxx-534-            ScEnginePoolHelper( pEnginePoolP, bDeleteEnginePoolP ),
+sc/source/core/tool/editutil.cxx-535-            EditEngine( pEnginePoolP )
+sc/source/core/tool/editutil.cxx-536-{
+--
+sc/source/core/tool/editutil.cxx-736-    const ScPatternAttr& rScPatternAttr(rDoc.getCellAttributeHelper().getDefaultCellAttribute());
+sc/source/core/tool/editutil.cxx-737-    Init(rScPatternAttr);
+sc/source/core/tool/editutil.cxx-738-}
+sc/source/core/tool/editutil.cxx-739-
+sc/source/core/tool/editutil.cxx-740-ScTabEditEngine::ScTabEditEngine( const ScPatternAttr& rPattern,
+sc/source/core/tool/editutil.cxx:741:            SfxItemPool* pEngineItemPool, ScDocument& rDoc, SfxItemPool* pTextObjectPool )
+sc/source/core/tool/editutil.cxx-742-        : ScFieldEditEngine( &rDoc, pEngineItemPool, pTextObjectPool )
+sc/source/core/tool/editutil.cxx-743-{
+sc/source/core/tool/editutil.cxx-744-    if ( pTextObjectPool )
+sc/source/core/tool/editutil.cxx-745-        SetEditTextObjectPool( pTextObjectPool );
+sc/source/core/tool/editutil.cxx-746-    Init( rPattern );
+--
+sc/source/core/tool/editutil.cxx-824-{
+sc/source/core/tool/editutil.cxx-825-    nPageNo = nTotalPages = 0;
+sc/source/core/tool/editutil.cxx-826-    eNumType = SVX_NUM_ARABIC;
+sc/source/core/tool/editutil.cxx-827-}
+sc/source/core/tool/editutil.cxx-828-
+sc/source/core/tool/editutil.cxx:829:ScHeaderEditEngine::ScHeaderEditEngine( SfxItemPool* pEnginePoolP )
+sc/source/core/tool/editutil.cxx-830-        : ScEditEngineDefaulter( pEnginePoolP,true/*bDeleteEnginePoolP*/ )
+sc/source/core/tool/editutil.cxx-831-{
+sc/source/core/tool/editutil.cxx-832-}
+sc/source/core/tool/editutil.cxx-833-
+sc/source/core/tool/editutil.cxx-834-OUString ScHeaderEditEngine::CalcFieldValue( const SvxFieldItem& rField,
+--
+sc/source/core/tool/editutil.cxx-884-}
+sc/source/core/tool/editutil.cxx-885-
+sc/source/core/tool/editutil.cxx-886-//                          field data
+sc/source/core/tool/editutil.cxx-887-
+sc/source/core/tool/editutil.cxx-888-ScFieldEditEngine::ScFieldEditEngine(
+sc/source/core/tool/editutil.cxx:889:    ScDocument* pDoc, SfxItemPool* pEnginePoolP,
+sc/source/core/tool/editutil.cxx:890:    SfxItemPool* pTextObjectPool, bool bDeleteEnginePoolP) :
+sc/source/core/tool/editutil.cxx-891-        ScEditEngineDefaulter( pEnginePoolP, bDeleteEnginePoolP ),
+sc/source/core/tool/editutil.cxx-892-        mpDoc(pDoc), bExecuteURL(true)
+sc/source/core/tool/editutil.cxx-893-{
+sc/source/core/tool/editutil.cxx-894-    if ( pTextObjectPool )
+sc/source/core/tool/editutil.cxx-895-        SetEditTextObjectPool( pTextObjectPool );
+--
+sc/source/core/tool/editutil.cxx-920-        return true;
+sc/source/core/tool/editutil.cxx-921-    }
+sc/source/core/tool/editutil.cxx-922-    return false;
+sc/source/core/tool/editutil.cxx-923-}
+sc/source/core/tool/editutil.cxx-924-
+sc/source/core/tool/editutil.cxx:925:ScNoteEditEngine::ScNoteEditEngine( SfxItemPool* pEnginePoolP,
+sc/source/core/tool/editutil.cxx:926:            SfxItemPool* pTextObjectPool ) :
+sc/source/core/tool/editutil.cxx-927-    ScEditEngineDefaulter( pEnginePoolP, false/*bDeleteEnginePoolP*/ )
+sc/source/core/tool/editutil.cxx-928-{
+sc/source/core/tool/editutil.cxx-929-    if ( pTextObjectPool )
+sc/source/core/tool/editutil.cxx-930-        SetEditTextObjectPool( pTextObjectPool );
+sc/source/core/tool/editutil.cxx-931-    SetControlWord( EEControlBits(GetControlWord() | EEControlBits::MARKFIELDS) & ~EEControlBits::RTFSTYLESHEETS );
+--
+sc/source/core/tool/defaultsoptions.cxx-77-
+sc/source/core/tool/defaultsoptions.cxx-78-    const ScTpDefaultsItem& rPItem = static_cast<const ScTpDefaultsItem&>(rItem);
+sc/source/core/tool/defaultsoptions.cxx-79-    return ( theOptions == rPItem.theOptions );
+sc/source/core/tool/defaultsoptions.cxx-80-}
+sc/source/core/tool/defaultsoptions.cxx-81-
+sc/source/core/tool/defaultsoptions.cxx:82:ScTpDefaultsItem* ScTpDefaultsItem::Clone( SfxItemPool * ) const
+sc/source/core/tool/defaultsoptions.cxx-83-{
+sc/source/core/tool/defaultsoptions.cxx-84-    return new ScTpDefaultsItem( *this );
+sc/source/core/tool/defaultsoptions.cxx-85-}
+sc/source/core/tool/defaultsoptions.cxx-86-
+sc/source/core/tool/defaultsoptions.cxx-87-constexpr OUStringLiteral CFGPATH_FORMULA = u"Office.Calc/Defaults";
+--
+sc/source/core/tool/viewopti.cxx-185-    const ScTpViewItem& rPItem = static_cast<const ScTpViewItem&>(rItem);
+sc/source/core/tool/viewopti.cxx-186-
+sc/source/core/tool/viewopti.cxx-187-    return ( theOptions == rPItem.theOptions );
+sc/source/core/tool/viewopti.cxx-188-}
+sc/source/core/tool/viewopti.cxx-189-
+sc/source/core/tool/viewopti.cxx:190:ScTpViewItem* ScTpViewItem::Clone( SfxItemPool * ) const
+sc/source/core/tool/viewopti.cxx-191-{
+sc/source/core/tool/viewopti.cxx-192-    return new ScTpViewItem( *this );
+sc/source/core/tool/viewopti.cxx-193-}
+sc/source/core/tool/viewopti.cxx-194-
+sc/source/core/tool/viewopti.cxx-195-//  Config Item containing view options
+--
+sc/source/core/tool/formulaopt.cxx-142-
+sc/source/core/tool/formulaopt.cxx-143-    const ScTpFormulaItem& rPItem = static_cast<const ScTpFormulaItem&>(rItem);
+sc/source/core/tool/formulaopt.cxx-144-    return ( theOptions == rPItem.theOptions );
+sc/source/core/tool/formulaopt.cxx-145-}
+sc/source/core/tool/formulaopt.cxx-146-
+sc/source/core/tool/formulaopt.cxx:147:ScTpFormulaItem* ScTpFormulaItem::Clone( SfxItemPool * ) const
+sc/source/core/tool/formulaopt.cxx-148-{
+sc/source/core/tool/formulaopt.cxx-149-    return new ScTpFormulaItem( *this );
+sc/source/core/tool/formulaopt.cxx-150-}
+sc/source/core/tool/formulaopt.cxx-151-
+sc/source/core/tool/formulaopt.cxx-152-constexpr OUStringLiteral CFGPATH_FORMULA = u"Office.Calc/Formula";
+--
+sc/source/core/data/poolhelp.cxx-40-    pFormTable.reset();
+sc/source/core/data/poolhelp.cxx-41-    mxStylePool.clear();
+sc/source/core/data/poolhelp.cxx-42-    pDocPool.clear();
+sc/source/core/data/poolhelp.cxx-43-}
+sc/source/core/data/poolhelp.cxx-44-
+sc/source/core/data/poolhelp.cxx:45:SfxItemPool* ScPoolHelper::GetEditPool() const
+sc/source/core/data/poolhelp.cxx-46-{
+sc/source/core/data/poolhelp.cxx-47-    if ( !pEditPool )
+sc/source/core/data/poolhelp.cxx-48-    {
+sc/source/core/data/poolhelp.cxx-49-        pEditPool = EditEngine::CreatePool();
+sc/source/core/data/poolhelp.cxx-50-        pEditPool->SetDefaultMetric( MapUnit::Map100thMM );
+sc/source/core/data/poolhelp.cxx-51-    }
+sc/source/core/data/poolhelp.cxx-52-    return pEditPool.get();
+sc/source/core/data/poolhelp.cxx-53-}
+sc/source/core/data/poolhelp.cxx-54-
+sc/source/core/data/poolhelp.cxx:55:SfxItemPool* ScPoolHelper::GetEnginePool() const
+sc/source/core/data/poolhelp.cxx-56-{
+sc/source/core/data/poolhelp.cxx-57-    if ( !pEnginePool )
+sc/source/core/data/poolhelp.cxx-58-    {
+sc/source/core/data/poolhelp.cxx-59-        pEnginePool = EditEngine::CreatePool();
+sc/source/core/data/poolhelp.cxx-60-        pEnginePool->SetDefaultMetric( MapUnit::Map100thMM );
+--
+sc/source/core/data/attrib.cxx-107-    return SfxPoolItem::operator==(rItem)
+sc/source/core/data/attrib.cxx-108-             && (nColMerge == static_cast<const ScMergeAttr&>(rItem).nColMerge)
+sc/source/core/data/attrib.cxx-109-             && (nRowMerge == static_cast<const ScMergeAttr&>(rItem).nRowMerge);
+sc/source/core/data/attrib.cxx-110-}
+sc/source/core/data/attrib.cxx-111-
+sc/source/core/data/attrib.cxx:112:ScMergeAttr* ScMergeAttr::Clone( SfxItemPool * ) const
+sc/source/core/data/attrib.cxx-113-{
+sc/source/core/data/attrib.cxx-114-    return new ScMergeAttr(*this);
+sc/source/core/data/attrib.cxx-115-}
+sc/source/core/data/attrib.cxx-116-
+sc/source/core/data/attrib.cxx-117-void ScMergeAttr::dumpAsXml(xmlTextWriterPtr pWriter) const
+--
+sc/source/core/data/attrib.cxx-138-
+sc/source/core/data/attrib.cxx-139-ScMergeFlagAttr::~ScMergeFlagAttr()
+sc/source/core/data/attrib.cxx-140-{
+sc/source/core/data/attrib.cxx-141-}
+sc/source/core/data/attrib.cxx-142-
+sc/source/core/data/attrib.cxx:143:ScMergeFlagAttr* ScMergeFlagAttr::Clone(SfxItemPool *) const
+sc/source/core/data/attrib.cxx-144-{
+sc/source/core/data/attrib.cxx-145-    return new ScMergeFlagAttr(*this);
+sc/source/core/data/attrib.cxx-146-}
+sc/source/core/data/attrib.cxx-147-
+sc/source/core/data/attrib.cxx-148-bool ScMergeFlagAttr::HasPivotButton() const
+--
+sc/source/core/data/attrib.cxx-351-             && (bHideFormula == static_cast<const ScProtectionAttr&>(rItem).bHideFormula)
+sc/source/core/data/attrib.cxx-352-             && (bHideCell == static_cast<const ScProtectionAttr&>(rItem).bHideCell)
+sc/source/core/data/attrib.cxx-353-             && (bHidePrint == static_cast<const ScProtectionAttr&>(rItem).bHidePrint);
+sc/source/core/data/attrib.cxx-354-}
+sc/source/core/data/attrib.cxx-355-
+sc/source/core/data/attrib.cxx:356:ScProtectionAttr* ScProtectionAttr::Clone( SfxItemPool * ) const
+sc/source/core/data/attrib.cxx-357-{
+sc/source/core/data/attrib.cxx-358-    return new ScProtectionAttr(*this);
+sc/source/core/data/attrib.cxx-359-}
+sc/source/core/data/attrib.cxx-360-
+sc/source/core/data/attrib.cxx-361-void ScProtectionAttr::SetProtection( bool bProtect)
+--
+sc/source/core/data/attrib.cxx-482-    return    ScGlobal::EETextObjEqual(pLeftArea.get(),   r.pLeftArea.get())
+sc/source/core/data/attrib.cxx-483-           && ScGlobal::EETextObjEqual(pCenterArea.get(), r.pCenterArea.get())
+sc/source/core/data/attrib.cxx-484-           && ScGlobal::EETextObjEqual(pRightArea.get(),  r.pRightArea.get());
+sc/source/core/data/attrib.cxx-485-}
+sc/source/core/data/attrib.cxx-486-
+sc/source/core/data/attrib.cxx:487:ScPageHFItem* ScPageHFItem::Clone( SfxItemPool* ) const
+sc/source/core/data/attrib.cxx-488-{
+sc/source/core/data/attrib.cxx-489-    return new ScPageHFItem( *this );
+sc/source/core/data/attrib.cxx-490-}
+sc/source/core/data/attrib.cxx-491-
+sc/source/core/data/attrib.cxx-492-void ScPageHFItem::SetLeftArea( const EditTextObject& rNew )
+--
+sc/source/core/data/attrib.cxx-578-sal_uInt16 ScViewObjectModeItem::GetValueCount() const
+sc/source/core/data/attrib.cxx-579-{
+sc/source/core/data/attrib.cxx-580-    return 2;
+sc/source/core/data/attrib.cxx-581-}
+sc/source/core/data/attrib.cxx-582-
+sc/source/core/data/attrib.cxx:583:ScViewObjectModeItem* ScViewObjectModeItem::Clone( SfxItemPool* ) const
+sc/source/core/data/attrib.cxx-584-{
+sc/source/core/data/attrib.cxx-585-    return new ScViewObjectModeItem( *this );
+sc/source/core/data/attrib.cxx-586-}
+sc/source/core/data/attrib.cxx-587-
+sc/source/core/data/attrib.cxx-588-ScPageScaleToItem::ScPageScaleToItem() :
+--
+sc/source/core/data/attrib.cxx-601-
+sc/source/core/data/attrib.cxx-602-ScPageScaleToItem::~ScPageScaleToItem()
+sc/source/core/data/attrib.cxx-603-{
+sc/source/core/data/attrib.cxx-604-}
+sc/source/core/data/attrib.cxx-605-
+sc/source/core/data/attrib.cxx:606:ScPageScaleToItem* ScPageScaleToItem::Clone( SfxItemPool* ) const
+sc/source/core/data/attrib.cxx-607-{
+sc/source/core/data/attrib.cxx-608-    return new ScPageScaleToItem( *this );
+sc/source/core/data/attrib.cxx-609-}
+sc/source/core/data/attrib.cxx-610-
+sc/source/core/data/attrib.cxx-611-bool ScPageScaleToItem::operator==( const SfxPoolItem& rCmp ) const
+--
+sc/source/core/data/attrib.cxx-742-    for (const auto & rIdx : maIndex)
+sc/source/core/data/attrib.cxx-743-        o3tl::hash_combine(seed, rIdx);
+sc/source/core/data/attrib.cxx-744-    return seed;
+sc/source/core/data/attrib.cxx-745-}
+sc/source/core/data/attrib.cxx-746-
+sc/source/core/data/attrib.cxx:747:ScCondFormatItem* ScCondFormatItem::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-748-{
+sc/source/core/data/attrib.cxx-749-    return new ScCondFormatItem(maIndex);
+sc/source/core/data/attrib.cxx-750-}
+sc/source/core/data/attrib.cxx-751-
+sc/source/core/data/attrib.cxx-752-void ScCondFormatItem::dumpAsXml(xmlTextWriterPtr pWriter) const
+--
+sc/source/core/data/attrib.cxx-764-ScRotateValueItem::ScRotateValueItem(Degree100 nAngle)
+sc/source/core/data/attrib.cxx-765-    : SdrAngleItem(ATTR_ROTATE_VALUE, nAngle)
+sc/source/core/data/attrib.cxx-766-{
+sc/source/core/data/attrib.cxx-767-}
+sc/source/core/data/attrib.cxx-768-
+sc/source/core/data/attrib.cxx:769:ScRotateValueItem* ScRotateValueItem::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-770-{
+sc/source/core/data/attrib.cxx-771-    return new ScRotateValueItem(GetValue());
+sc/source/core/data/attrib.cxx-772-}
+sc/source/core/data/attrib.cxx-773-
+sc/source/core/data/attrib.cxx-774-bool ScRotateValueItem::GetPresentation(SfxItemPresentation ePresentation,
+--
+sc/source/core/data/attrib.cxx-785-ScShrinkToFitCell::ScShrinkToFitCell(bool bShrink)
+sc/source/core/data/attrib.cxx-786-    : SfxBoolItem(ATTR_SHRINKTOFIT, bShrink)
+sc/source/core/data/attrib.cxx-787-{
+sc/source/core/data/attrib.cxx-788-}
+sc/source/core/data/attrib.cxx-789-
+sc/source/core/data/attrib.cxx:790:ScShrinkToFitCell* ScShrinkToFitCell::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-791-{
+sc/source/core/data/attrib.cxx-792-    return new ScShrinkToFitCell(GetValue());
+sc/source/core/data/attrib.cxx-793-}
+sc/source/core/data/attrib.cxx-794-
+sc/source/core/data/attrib.cxx-795-bool ScShrinkToFitCell::GetPresentation(SfxItemPresentation,
+--
+sc/source/core/data/attrib.cxx-805-ScVerticalStackCell::ScVerticalStackCell(bool bStack)
+sc/source/core/data/attrib.cxx-806-    : SfxBoolItem(ATTR_STACKED, bStack)
+sc/source/core/data/attrib.cxx-807-{
+sc/source/core/data/attrib.cxx-808-}
+sc/source/core/data/attrib.cxx-809-
+sc/source/core/data/attrib.cxx:810:ScVerticalStackCell* ScVerticalStackCell::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-811-{
+sc/source/core/data/attrib.cxx-812-    return new ScVerticalStackCell(GetValue());
+sc/source/core/data/attrib.cxx-813-}
+sc/source/core/data/attrib.cxx-814-
+sc/source/core/data/attrib.cxx-815-bool ScVerticalStackCell::GetPresentation(SfxItemPresentation,
+--
+sc/source/core/data/attrib.cxx-825-ScLineBreakCell::ScLineBreakCell(bool bStack)
+sc/source/core/data/attrib.cxx-826-    : SfxBoolItem(ATTR_LINEBREAK, bStack)
+sc/source/core/data/attrib.cxx-827-{
+sc/source/core/data/attrib.cxx-828-}
+sc/source/core/data/attrib.cxx-829-
+sc/source/core/data/attrib.cxx:830:ScLineBreakCell* ScLineBreakCell::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-831-{
+sc/source/core/data/attrib.cxx-832-    return new ScLineBreakCell(GetValue());
+sc/source/core/data/attrib.cxx-833-}
+sc/source/core/data/attrib.cxx-834-
+sc/source/core/data/attrib.cxx-835-bool ScLineBreakCell::GetPresentation(SfxItemPresentation,
+--
+sc/source/core/data/attrib.cxx-845-ScHyphenateCell::ScHyphenateCell(bool bHyphenate)
+sc/source/core/data/attrib.cxx-846-    : SfxBoolItem(ATTR_HYPHENATE, bHyphenate)
+sc/source/core/data/attrib.cxx-847-{
+sc/source/core/data/attrib.cxx-848-}
+sc/source/core/data/attrib.cxx-849-
+sc/source/core/data/attrib.cxx:850:ScHyphenateCell* ScHyphenateCell::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-851-{
+sc/source/core/data/attrib.cxx-852-    return new ScHyphenateCell(GetValue());
+sc/source/core/data/attrib.cxx-853-}
+sc/source/core/data/attrib.cxx-854-
+sc/source/core/data/attrib.cxx-855-bool ScHyphenateCell::GetPresentation(SfxItemPresentation,
+--
+sc/source/core/data/attrib.cxx-865-ScIndentItem::ScIndentItem(sal_uInt16 nIndent)
+sc/source/core/data/attrib.cxx-866-    : SfxUInt16Item(ATTR_INDENT, nIndent)
+sc/source/core/data/attrib.cxx-867-{
+sc/source/core/data/attrib.cxx-868-}
+sc/source/core/data/attrib.cxx-869-
+sc/source/core/data/attrib.cxx:870:ScIndentItem* ScIndentItem::Clone(SfxItemPool*) const
+sc/source/core/data/attrib.cxx-871-{
+sc/source/core/data/attrib.cxx-872-    return new ScIndentItem(GetValue());
+sc/source/core/data/attrib.cxx-873-}
+sc/source/core/data/attrib.cxx-874-
+sc/source/core/data/attrib.cxx-875-bool ScIndentItem::GetPresentation(SfxItemPresentation ePres,
+--
+sc/source/core/data/documen2.cxx-114-CellAttributeHelper& ScDocument::getCellAttributeHelper() const
+sc/source/core/data/documen2.cxx-115-{
+sc/source/core/data/documen2.cxx-116-    if (!mpCellAttributeHelper)
+sc/source/core/data/documen2.cxx-117-    {
+sc/source/core/data/documen2.cxx-118-        assert(!IsClipOrUndo() && "CellAttributeHelper needs to be shared using SharePooledResources, not created (!)");
+sc/source/core/data/documen2.cxx:119:        SfxItemPool* pPool(const_cast<ScDocument*>(this)->GetPool());
+sc/source/core/data/documen2.cxx:120:        assert(nullptr != pPool && "No SfxItemPool for this ScDocument (!)");
+sc/source/core/data/documen2.cxx-121-        mpCellAttributeHelper.reset(new CellAttributeHelper(*pPool));
+sc/source/core/data/documen2.cxx-122-    }
+sc/source/core/data/documen2.cxx-123-
+sc/source/core/data/documen2.cxx-124-    return *mpCellAttributeHelper;
+sc/source/core/data/documen2.cxx-125-}
+--
+sc/source/core/data/documen2.cxx-484-{
+sc/source/core/data/documen2.cxx-485-    assert(!IsThreadedGroupCalcInProgress());
+sc/source/core/data/documen2.cxx-486-    return mxPoolHelper->GetFormTable();
+sc/source/core/data/documen2.cxx-487-}
+sc/source/core/data/documen2.cxx-488-
+sc/source/core/data/documen2.cxx:489:SfxItemPool* ScDocument::GetEditPool() const
+sc/source/core/data/documen2.cxx-490-{
+sc/source/core/data/documen2.cxx-491-    return mxPoolHelper->GetEditPool();
+sc/source/core/data/documen2.cxx-492-}
+sc/source/core/data/documen2.cxx-493-
+sc/source/core/data/documen2.cxx:494:SfxItemPool* ScDocument::GetEnginePool() const
+sc/source/core/data/documen2.cxx-495-{
+sc/source/core/data/documen2.cxx-496-    return mxPoolHelper->GetEnginePool();
+sc/source/core/data/documen2.cxx-497-}
+sc/source/core/data/documen2.cxx-498-
+sc/source/core/data/documen2.cxx-499-ScFieldEditEngine& ScDocument::GetEditEngine()
+--
+sc/source/core/data/global.cxx-506-{
+sc/source/core/data/global.cxx-507-    assert(!bThreadedGroupCalcInProgress);
+sc/source/core/data/global.cxx-508-    aStrClipDocName = rNew;
+sc/source/core/data/global.cxx-509-}
+sc/source/core/data/global.cxx-510-
+sc/source/core/data/global.cxx:511:void ScGlobal::InitTextHeight(SfxItemPool& rPool)
+sc/source/core/data/global.cxx-512-{
+sc/source/core/data/global.cxx-513-    // this gets handed over the m_pMessagePool in ScModule::ScModule, so
+sc/source/core/data/global.cxx-514-    // the previously used item ScPatternAttr is unchanged. This allows to
+sc/source/core/data/global.cxx-515-    // just use an temporary incarnation of a CellAttributeHelper here
+sc/source/core/data/global.cxx-516-    const CellAttributeHelper aTempHelper(rPool);
+--
+sc/source/core/data/table2.cxx-1708-
+sc/source/core/data/table2.cxx-1709-    CreateColumnIfNotExists(nCol).SetEditText(nRow, std::move(pEditText));
+sc/source/core/data/table2.cxx-1710-    return true;
+sc/source/core/data/table2.cxx-1711-}
+sc/source/core/data/table2.cxx-1712-
+sc/source/core/data/table2.cxx:1713:void ScTable::SetEditText( SCCOL nCol, SCROW nRow, const EditTextObject& rEditText, const SfxItemPool* pEditPool )
+sc/source/core/data/table2.cxx-1714-{
+sc/source/core/data/table2.cxx-1715-    if (!ValidColRow(nCol, nRow))
+sc/source/core/data/table2.cxx-1716-        return;
+sc/source/core/data/table2.cxx-1717-
+sc/source/core/data/table2.cxx-1718-    CreateColumnIfNotExists(nCol).SetEditText(nRow, rEditText, pEditPool);
+--
+sc/source/core/data/stlpool.cxx-48-#include <stlpool.hxx>
+sc/source/core/data/stlpool.cxx-49-#include <stlsheet.hxx>
+sc/source/core/data/stlpool.cxx-50-#include <editutil.hxx>
+sc/source/core/data/stlpool.cxx-51-#include <stylehelper.hxx>
+sc/source/core/data/stlpool.cxx-52-
+sc/source/core/data/stlpool.cxx:53:ScStyleSheetPool::ScStyleSheetPool( const SfxItemPool& rPoolP,
+sc/source/core/data/stlpool.cxx-54-                                    ScDocument*     pDocument )
+sc/source/core/data/stlpool.cxx-55-    :   SfxStyleSheetPool( rPoolP ),
+sc/source/core/data/stlpool.cxx-56-        pActualStyleSheet( nullptr ),
+sc/source/core/data/stlpool.cxx-57-        pDoc( pDocument ),
+sc/source/core/data/stlpool.cxx-58-        bHasStandardStyles( false )
+--
+sc/source/core/data/drwlayer.cxx-276-    SetPropertyList( static_cast<XPropertyList *> (pXCol.get()) );
+sc/source/core/data/drwlayer.cxx-277-
+sc/source/core/data/drwlayer.cxx-278-    SetSwapGraphics();
+sc/source/core/data/drwlayer.cxx-279-
+sc/source/core/data/drwlayer.cxx-280-    SetScaleUnit(MapUnit::Map100thMM);
+sc/source/core/data/drwlayer.cxx:281:    SfxItemPool& rPool = GetItemPool();
+sc/source/core/data/drwlayer.cxx-282-    rPool.SetDefaultMetric(MapUnit::Map100thMM);
+sc/source/core/data/drwlayer.cxx-283-    SvxFrameDirectionItem aModeItem( SvxFrameDirection::Environment, EE_PARA_WRITINGDIR );
+sc/source/core/data/drwlayer.cxx-284-    rPool.SetUserDefaultItem( aModeItem );
+sc/source/core/data/drwlayer.cxx-285-
+sc/source/core/data/drwlayer.cxx-286-    // #i33700#
+--
+sc/source/core/data/drwlayer.cxx-315-    Outliner& rHitOutliner = GetHitTestOutliner();
+sc/source/core/data/drwlayer.cxx-316-    rHitOutliner.SetCalcFieldValueHdl( LINK( pScMod, ScModule, CalcFieldValueHdl ) );
+sc/source/core/data/drwlayer.cxx-317-    rHitOutliner.SetStyleSheetPool(static_cast<SfxStyleSheetPool*>(GetStyleSheetPool()));
+sc/source/core/data/drwlayer.cxx-318-
+sc/source/core/data/drwlayer.cxx-319-    // set FontHeight pool defaults without changing static SdrEngineDefaults
+sc/source/core/data/drwlayer.cxx:320:    SfxItemPool* pOutlinerPool = rOutliner.GetEditTextObjectPool();
+sc/source/core/data/drwlayer.cxx-321-    if ( pOutlinerPool )
+sc/source/core/data/drwlayer.cxx-322-    {
+sc/source/core/data/drwlayer.cxx-323-         m_pItemPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT ));           // 12Pt
+sc/source/core/data/drwlayer.cxx-324-         m_pItemPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT_CJK ));           // 12Pt
+sc/source/core/data/drwlayer.cxx-325-         m_pItemPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT_CTL ));           // 12Pt
+sc/source/core/data/drwlayer.cxx-326-    }
+sc/source/core/data/drwlayer.cxx:327:    SfxItemPool* pHitOutlinerPool = rHitOutliner.GetEditTextObjectPool();
+sc/source/core/data/drwlayer.cxx-328-    if ( pHitOutlinerPool )
+sc/source/core/data/drwlayer.cxx-329-    {
+sc/source/core/data/drwlayer.cxx-330-         pHitOutlinerPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT ));    // 12Pt
+sc/source/core/data/drwlayer.cxx-331-         pHitOutlinerPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT_CJK ));    // 12Pt
+sc/source/core/data/drwlayer.cxx-332-         pHitOutlinerPool->SetUserDefaultItem(SvxFontHeightItem( 423, 100, EE_CHAR_FONTHEIGHT_CTL ));    // 12Pt
+--
+sc/source/core/data/documen9.cxx-121-
+sc/source/core/data/documen9.cxx-122-    sfx2::LinkManager* pMgr = GetDocLinkManager().getLinkManager(bAutoCalc);
+sc/source/core/data/documen9.cxx-123-    if (pMgr)
+sc/source/core/data/documen9.cxx-124-        mpDrawLayer->SetLinkManager(pMgr);
+sc/source/core/data/documen9.cxx-125-
+sc/source/core/data/documen9.cxx:126:    // set DrawingLayer's SfxItemPool at Calc's SfxItemPool as
+sc/source/core/data/documen9.cxx-127-    // secondary pool to support DrawingLayer FillStyle ranges (and similar)
+sc/source/core/data/documen9.cxx:128:    // in SfxItemSets using the Calc SfxItemPool. This is e.g. needed when
+sc/source/core/data/documen9.cxx-129-    // the PageStyle using SvxBrushItem is visualized and will be potentially
+sc/source/core/data/documen9.cxx-130-    // used more intense in the future
+sc/source/core/data/documen9.cxx-131-    if (mxPoolHelper.is() && !IsClipOrUndo()) //Using IsClipOrUndo as a proxy for SharePooledResources called
+sc/source/core/data/documen9.cxx-132-    {
+sc/source/core/data/documen9.cxx-133-        ScDocumentPool* pLocalPool = mxPoolHelper->GetDocPool();
+--
+sc/source/core/data/documen9.cxx-165-    mpDrawLayer->SetDefaultTabulator( GetDocOptions().GetTabDistance() );
+sc/source/core/data/documen9.cxx-166-
+sc/source/core/data/documen9.cxx-167-    UpdateDrawPrinter();
+sc/source/core/data/documen9.cxx-168-
+sc/source/core/data/documen9.cxx-169-    // set draw defaults directly
+sc/source/core/data/documen9.cxx:170:    SfxItemPool& rDrawPool = mpDrawLayer->GetItemPool();
+sc/source/core/data/documen9.cxx-171-    rDrawPool.SetUserDefaultItem( SvxAutoKernItem( true, EE_CHAR_PAIRKERNING ) );
+sc/source/core/data/documen9.cxx-172-
+sc/source/core/data/documen9.cxx-173-    UpdateDrawLanguages();
+sc/source/core/data/documen9.cxx-174-    if (bImportingXML)
+sc/source/core/data/documen9.cxx-175-        mpDrawLayer->EnableAdjust(false);
+--
+sc/source/core/data/documen9.cxx-181-
+sc/source/core/data/documen9.cxx-182-void ScDocument::UpdateDrawLanguages()
+sc/source/core/data/documen9.cxx-183-{
+sc/source/core/data/documen9.cxx-184-    if (mpDrawLayer)
+sc/source/core/data/documen9.cxx-185-    {
+sc/source/core/data/documen9.cxx:186:        SfxItemPool& rDrawPool = mpDrawLayer->GetItemPool();
+sc/source/core/data/documen9.cxx-187-        rDrawPool.SetUserDefaultItem( SvxLanguageItem( eLanguage, EE_CHAR_LANGUAGE ) );
+sc/source/core/data/documen9.cxx-188-        rDrawPool.SetUserDefaultItem( SvxLanguageItem( eCjkLanguage, EE_CHAR_LANGUAGE_CJK ) );
+sc/source/core/data/documen9.cxx-189-        rDrawPool.SetUserDefaultItem( SvxLanguageItem( eCtlLanguage, EE_CHAR_LANGUAGE_CTL ) );
+sc/source/core/data/documen9.cxx-190-    }
+sc/source/core/data/documen9.cxx-191-}
+--
+sc/source/core/data/documen9.cxx-539-    if ( !(eSrcSet != eSysSet || bUpdateOld) )
+sc/source/core/data/documen9.cxx-540-        return;
+sc/source/core/data/documen9.cxx-541-
+sc/source/core/data/documen9.cxx-542-    ScDocumentPool* pPool = mxPoolHelper->GetDocPool();
+sc/source/core/data/documen9.cxx-543-
+sc/source/core/data/documen9.cxx:544:    pPool->iterateItemSurrogates(ATTR_FONT, [&](SfxItemPool::SurrogateData& rData)
+sc/source/core/data/documen9.cxx-545-    {
+sc/source/core/data/documen9.cxx-546-        const SvxFontItem& rSvxFontItem(static_cast<const SvxFontItem&>(rData.getItem()));
+sc/source/core/data/documen9.cxx-547-        if (eSrcSet == rSvxFontItem.GetCharSet() || (bUpdateOld && RTL_TEXTENCODING_SYMBOL != rSvxFontItem.GetCharSet()))
+sc/source/core/data/documen9.cxx-548-        {
+sc/source/core/data/documen9.cxx-549-            SvxFontItem* pNew(rSvxFontItem.Clone(pPool));
+--
+sc/source/core/data/documen9.cxx-553-        return true; // continue callbacks
+sc/source/core/data/documen9.cxx-554-    });
+sc/source/core/data/documen9.cxx-555-
+sc/source/core/data/documen9.cxx-556-    if ( mpDrawLayer )
+sc/source/core/data/documen9.cxx-557-    {
+sc/source/core/data/documen9.cxx:558:        pPool->iterateItemSurrogates(EE_CHAR_FONTINFO, [&](SfxItemPool::SurrogateData& rData)
+sc/source/core/data/documen9.cxx-559-        {
+sc/source/core/data/documen9.cxx-560-            const SvxFontItem& rSvxFontItem(static_cast<const SvxFontItem&>(rData.getItem()));
+sc/source/core/data/documen9.cxx-561-            if (eSrcSet == rSvxFontItem.GetCharSet() || (bUpdateOld && RTL_TEXTENCODING_SYMBOL != rSvxFontItem.GetCharSet()))
+sc/source/core/data/documen9.cxx-562-            {
+sc/source/core/data/documen9.cxx-563-                SvxFontItem* pNew(rSvxFontItem.Clone(pPool));
+--
+sc/source/core/data/table1.cxx-2798-
+sc/source/core/data/table1.cxx-2799-// out-of-line the cold part of the CreateColumnIfNotExists function
+sc/source/core/data/table1.cxx-2800-void ScTable::CreateColumnIfNotExistsImpl( const SCCOL nScCol )
+sc/source/core/data/table1.cxx-2801-{
+sc/source/core/data/table1.cxx-2802-    // When doing multi-threaded load of, e.g. XLS files, we can hit this, which calls
+sc/source/core/data/table1.cxx:2803:    // into SfxItemPool::Put, in parallel with other code that calls into SfxItemPool::Put,
+sc/source/core/data/table1.cxx-2804-    // which is bad since that code is not thread-safe.
+sc/source/core/data/table1.cxx-2805-    SolarMutexGuard aGuard;
+sc/source/core/data/table1.cxx-2806-    const SCCOL aOldColSize = aCol.size();
+sc/source/core/data/table1.cxx-2807-    aCol.resize( rDocument.GetSheetLimits(), static_cast< size_t >( nScCol + 1 ) );
+sc/source/core/data/table1.cxx-2808-    for (SCCOL i = aOldColSize; i <= nScCol; i++)
+--
+sc/source/core/data/document.cxx-3477-    if (ScTable* pTable = FetchTable(rPos.Tab()))
+sc/source/core/data/document.cxx-3478-        return pTable->SetEditText(rPos.Col(), rPos.Row(), std::move(pEditText));
+sc/source/core/data/document.cxx-3479-    return false;
+sc/source/core/data/document.cxx-3480-}
+sc/source/core/data/document.cxx-3481-
+sc/source/core/data/document.cxx:3482:void ScDocument::SetEditText( const ScAddress& rPos, const EditTextObject& rEditText, const SfxItemPool* pEditPool )
+sc/source/core/data/document.cxx-3483-{
+sc/source/core/data/document.cxx-3484-    if (ScTable* pTable = FetchTable(rPos.Tab()))
+sc/source/core/data/document.cxx-3485-        pTable->SetEditText(rPos.Col(), rPos.Row(), rEditText, pEditPool);
+sc/source/core/data/document.cxx-3486-}
+sc/source/core/data/document.cxx-3487-
+--
+sc/source/core/data/column.cxx-552-    return bEqual ? pStyle : nullptr;
+sc/source/core/data/column.cxx-553-}
+sc/source/core/data/column.cxx-554-
+sc/source/core/data/column.cxx-555-void ScColumn::ApplyAttr( SCROW nRow, const SfxPoolItem& rAttr )
+sc/source/core/data/column.cxx-556-{
+sc/source/core/data/column.cxx:557:    //  in order to only create a new SetItem, we don't need SfxItemPoolCache.
+sc/source/core/data/column.cxx-558-    //TODO: Warning: ScItemPoolCache seems to create too many Refs for the new SetItem ??
+sc/source/core/data/column.cxx-559-
+sc/source/core/data/column.cxx-560-    const ScPatternAttr* pOldPattern(pAttrArray->GetPattern(nRow));
+sc/source/core/data/column.cxx-561-    ScPatternAttr* pNewPattern(new ScPatternAttr(*pOldPattern));
+sc/source/core/data/column.cxx-562-    pNewPattern->GetItemSet().Put(rAttr);
+--
+sc/source/core/data/patattr.cxx-64-#include <scmod.hxx>
+sc/source/core/data/patattr.cxx-65-#include <fillinfo.hxx>
+sc/source/core/data/patattr.cxx-66-#include <comphelper/lok.hxx>
+sc/source/core/data/patattr.cxx-67-#include <tabvwsh.hxx>
+sc/source/core/data/patattr.cxx-68-
+sc/source/core/data/patattr.cxx:69:CellAttributeHelper::CellAttributeHelper(SfxItemPool& rSfxItemPool)
+sc/source/core/data/patattr.cxx:70:: mrSfxItemPool(rSfxItemPool)
+sc/source/core/data/patattr.cxx-71-, mpDefaultCellAttribute(nullptr)
+sc/source/core/data/patattr.cxx-72-, maRegisteredCellAttributes()
+sc/source/core/data/patattr.cxx-73-, mpLastHit(nullptr)
+sc/source/core/data/patattr.cxx-74-, mnCurrentMaxKey(0)
+sc/source/core/data/patattr.cxx-75-{
+--
+sc/source/core/data/column3.cxx-2406-    EditEngine& rEngine = GetDoc().GetEditEngine();
+sc/source/core/data/column3.cxx-2407-    rEngine.SetText(rEditText);
+sc/source/core/data/column3.cxx-2408-    SetEditText(rBlockPos, nRow, rEngine.CreateTextObject());
+sc/source/core/data/column3.cxx-2409-}
+sc/source/core/data/column3.cxx-2410-
+sc/source/core/data/column3.cxx:2411:void ScColumn::SetEditText( SCROW nRow, const EditTextObject& rEditText, const SfxItemPool* pEditPool )
+sc/source/core/data/column3.cxx-2412-{
+sc/source/core/data/column3.cxx-2413-    if (pEditPool && GetDoc().GetEditPool() == pEditPool)
+sc/source/core/data/column3.cxx-2414-    {
+sc/source/core/data/column3.cxx-2415-        SetEditText(nRow, rEditText.Clone());
+sc/source/core/data/column3.cxx-2416-        return;
+--
+sc/source/core/data/stlsheet.cxx-141-                {
+sc/source/core/data/stlsheet.cxx-142-                    // Page templates should not be derivable,
+sc/source/core/data/stlsheet.cxx-143-                    // therefore suitable values are set at this point.
+sc/source/core/data/stlsheet.cxx-144-                    // (== Standard page template)
+sc/source/core/data/stlsheet.cxx-145-
+sc/source/core/data/stlsheet.cxx:146:                    SfxItemPool& rItemPool = GetPool()->GetPool();
+sc/source/core/data/stlsheet.cxx-147-                    pSet = new SfxItemSet(rItemPool, WhichRangesContainer(svl::Items<
+sc/source/core/data/stlsheet.cxx-148-                        ATTR_USERDEF, ATTR_USERDEF,
+sc/source/core/data/stlsheet.cxx-149-                        ATTR_WRITINGDIR, ATTR_WRITINGDIR,
+sc/source/core/data/stlsheet.cxx-150-                        ATTR_BACKGROUND, ATTR_BACKGROUND,
+sc/source/core/data/stlsheet.cxx-151-                        ATTR_BORDER, ATTR_SHADOW,
+--
+sc/source/core/data/stlsheet.cxx-224-                }
+sc/source/core/data/stlsheet.cxx-225-                break;
+sc/source/core/data/stlsheet.cxx-226-
+sc/source/core/data/stlsheet.cxx-227-            case SfxStyleFamily::Frame:
+sc/source/core/data/stlsheet.cxx-228-            {
+sc/source/core/data/stlsheet.cxx:229:                SfxItemPool* pItemPool = &GetPool()->GetPool();
+sc/source/core/data/stlsheet.cxx-230-                assert(pItemPool);
+sc/source/core/data/stlsheet.cxx-231-                if (dynamic_cast<SdrItemPool*>(pItemPool) == nullptr)
+sc/source/core/data/stlsheet.cxx-232-                    pItemPool = pItemPool->GetSecondaryPool();
+sc/source/core/data/stlsheet.cxx-233-                assert(pItemPool);
+sc/source/core/data/stlsheet.cxx-234-
+--
+sc/source/core/data/docpool.cxx-211-            pGlobalBorderInnerAttr->SetDist(true);
+sc/source/core/data/docpool.cxx-212-            pGlobalBorderInnerAttr->SetMinDist(false);
+sc/source/core/data/docpool.cxx-213-            setItemAtItemInfoStatic(pGlobalBorderInnerAttr, maItemInfos[ATTR_BORDER_INNER - ATTR_STARTINDEX]);
+sc/source/core/data/docpool.cxx-214-        }
+sc/source/core/data/docpool.cxx-215-        virtual size_t size() const override { return maItemInfos.size(); }
+sc/source/core/data/docpool.cxx:216:        virtual const ItemInfo& getItemInfo(size_t nIndex, SfxItemPool& rPool) override
+sc/source/core/data/docpool.cxx-217-        {
+sc/source/core/data/docpool.cxx-218-            const ItemInfo& rRetval(maItemInfos[nIndex]);
+sc/source/core/data/docpool.cxx-219-
+sc/source/core/data/docpool.cxx-220-            // return immediately if we have the static entry and Item
+sc/source/core/data/docpool.cxx-221-            if (nullptr != rRetval.getItem())
+--
+sc/source/core/data/docpool.cxx-255-        g_aItemInfoPackageScDocument.reset(new ItemInfoPackageScDocument);
+sc/source/core/data/docpool.cxx-256-    return *g_aItemInfoPackageScDocument;
+sc/source/core/data/docpool.cxx-257-}
+sc/source/core/data/docpool.cxx-258-
+sc/source/core/data/docpool.cxx-259-ScDocumentPool::ScDocumentPool()
+sc/source/core/data/docpool.cxx:260:: SfxItemPool(u"ScDocumentPool"_ustr)
+sc/source/core/data/docpool.cxx-261-{
+sc/source/core/data/docpool.cxx-262-    registerItemInfoPackage(getItemInfoPackageScDocument());
+sc/source/core/data/docpool.cxx-263-}
+sc/source/core/data/docpool.cxx-264-
+sc/source/core/data/docpool.cxx-265-ScDocumentPool::~ScDocumentPool()
+sc/source/core/data/docpool.cxx-266-{
+sc/source/core/data/docpool.cxx-267-    sendShutdownHint();
+sc/source/core/data/docpool.cxx-268-    SetSecondaryPool(nullptr);
+sc/source/core/data/docpool.cxx-269-}
+sc/source/core/data/docpool.cxx-270-
+sc/source/core/data/docpool.cxx:271:rtl::Reference<SfxItemPool> ScDocumentPool::Clone() const
+sc/source/core/data/docpool.cxx-272-{
+sc/source/core/data/docpool.cxx:273:    return new SfxItemPool(*this);
+sc/source/core/data/docpool.cxx-274-}
+sc/source/core/data/docpool.cxx-275-
+sc/source/core/data/docpool.cxx-276-static bool lcl_HFPresentation
+sc/source/core/data/docpool.cxx-277-(
+sc/source/core/data/docpool.cxx-278-    const SfxPoolItem&  rItem,
