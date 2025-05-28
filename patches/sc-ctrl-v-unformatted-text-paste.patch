@@ -1,0 +1,276 @@
+diff --git a/sc/source/ui/view/cellsh1.cxx b/sc/source/ui/view/cellsh1.cxx
+index b0a6c605714f..398eff885656 100644
+--- a/sc/source/ui/view/cellsh1.cxx
++++ b/sc/source/ui/view/cellsh1.cxx
+@@ -19,6 +19,44 @@
+ 
+ #include <config_features.h>
+ 
++#include <asciiopt.hxx>   // for ScAsciiOptions
++
++#include <vcl/svapp.hxx> // For Application::GetSettings()
++
++
++// #include <tools/tempfile.hxx>   // For utl::TempFile for creating temporary files
++
++// #include <sw/source/filter/html/wrthtml.cxx>   // libreoffice-core/sw/source/filter/html/wrthtml.cxx
++
++
++
++
++
++
++#include <fstream>   // For std::ofstream, std::ifstream
++#include <cstdio>    // For std::tmpnam (BEWARE: UNSAFE), std::remove
++#include <string>    // For std::string
++#include <vector>    // For std::vector to read back
++
++// Required LibreOffice includes for string conversion
++#include <rtl/ustring.hxx> // For OUString
++#include <rtl/string.hxx>  // For OString, OUStringToOString, OStringToOUString
++#include <rtl/textenc.h>   // For RTL_TEXTENCODING_UTF8
++
++
++
++
++
++
++
++
++
++
++#include <tools/stream.hxx>     // For SvFileStream (or tools/fshelper.hxx for osl::File)
++#include <osl/file.hxx>         // For osl::File::createTempFile, etc. if using OSL directly
++
++
++
+ #include <com/sun/star/i18n/TextConversionOption.hpp>
+ #include <com/sun/star/sheet/DataPilotFieldFilter.hpp>
+ 
+@@ -1477,12 +1515,13 @@ void ScCellShell::ExecuteEdit( SfxRequest& rReq )
+                 pTabViewShell->UpdateCopySourceOverlay();
+             }
+             break;
+-        case SID_PASTE:
+-            {
+-                ScClipUtil::PasteFromClipboard( GetViewData(), pTabViewShell, true );
+-                rReq.Done();
+-            }
+-            break;
++            
++        // case SID_PASTE:
++        //     {
++        //         ScClipUtil::PasteFromClipboard( GetViewData(), pTabViewShell, true );
++        //         rReq.Done();
++        //     }
++        //     break;
+ 
+         case SID_CLIPBOARD_FORMAT_ITEMS:
+             {
+@@ -1888,35 +1927,185 @@ void ScCellShell::ExecuteEdit( SfxRequest& rReq )
+             pTabViewShell->CellContentChanged();        // => PasteFromSystem() ???
+             break;
+ 
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
+         case SID_PASTE_UNFORMATTED:
+-            // differentiate between own cell data and draw objects/external data
+-            // this makes FID_INS_CELL_CONTENTS superfluous
+             {
+-                weld::WaitObject aWait( GetViewData().GetDialogParent() );
++                ScClipUtil::PasteFromClipboard( GetViewData(), pTabViewShell, true );
++                rReq.Done();
++            }
++            break;
+ 
+-                // we should differentiate between SotClipboardFormatId::STRING and SotClipboardFormatId::STRING_TSVC,
+-                // and paste the SotClipboardFormatId::STRING_TSVC if it is available.
+-                // Which makes a difference if the clipboard contains cells with embedded line breaks.
+ 
+-                SotClipboardFormatId nFormat = HasClipboardFormat( SotClipboardFormatId::STRING_TSVC) ?
+-                    SotClipboardFormatId::STRING_TSVC : SotClipboardFormatId::STRING;
+ 
+-                const bool bRet = pTabViewShell->PasteFromSystem(nFormat, true); // TRUE: no error messages
+-                if ( bRet )
+-                {
+-                    rReq.SetReturnValue(SfxInt16Item(nSlot, 1)); // 1 = success
+-                    rReq.Done();
+-                }
+-                else
+-                {
+-                    rReq.SetReturnValue(SfxInt16Item(nSlot, 0)); // 0 = fail
+-                }
++        case SID_PASTE:
++            
++        { // Brace for case block
++
++            fprintf(stderr, ">>>>>> SC_DEBUG: SID_PASTE_UNFORMATTED case ENTERED! <<<<<<\n"); // <--- ADD THIS
++            fflush(stderr); // Ensure it prints immediately
++
++            weld::WaitObject aWait( GetViewData().GetDialogParent() );
++            // ScTabViewShell* pTabViewShell = GetViewData().GetViewShell()->GetScTabViewShell(); // Get pTabViewShell
++
++            vcl::Window* pWin = GetViewData().GetActiveWin();
++            TransferableDataHelper aDataHelper(
++                TransferableDataHelper::CreateFromSystemClipboard(pWin));
++            const uno::Reference<datatransfer::XTransferable>& xTransferable = aDataHelper.GetTransferable();
++
++            SotClipboardFormatId format = SotClipboardFormatId::STRING;
++            bool bPastedSuccessfully = false; // This will be set later
+ 
+-                pTabViewShell->CellContentChanged();        // => PasteFromSystem() ???
++            if (xTransferable.is() && aDataHelper.HasFormat(format))
++            { // Brace for if(xTransferable)
++                OUString sStrBuffer;
++                if (aDataHelper.GetString(format, sStrBuffer))
++                { // Brace for if(GetString)
++                    OUString sTextToImport = sStrBuffer; // Start with the original
++                    bool bLaunderingSuccessful = false;
++
++                    // --- START: Standard C++ Temp File Laundering ---
++                    char tmpFileNameBuffer[L_tmpnam];
++                    char* pTmpName = nullptr;
++                    #ifdef _MSC_VER
++                        errno_t err = tmpnam_s(tmpFileNameBuffer, L_tmpnam);
++                        if (err == 0) { pTmpName = tmpFileNameBuffer; }
++                    #else
++                        #pragma GCC diagnostic push
++                        #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++                        #pragma GCC diagnostic ignored "-Wsecurity"
++                        pTmpName = std::tmpnam(tmpFileNameBuffer);
++                        #pragma GCC diagnostic pop
++                    #endif
++
++                    if (pTmpName != nullptr)
++                    {
++                        std::string sTempFilePathStd = pTmpName;
++                        std::ofstream outFile(sTempFilePathStd, std::ios::out | std::ios::binary | std::ios::trunc);
++                        if (outFile.is_open())
++                        {
++                            OString sUtf8ForFile = rtl::OUStringToOString(sStrBuffer, RTL_TEXTENCODING_UTF8);
++                            outFile.write(sUtf8ForFile.getStr(), sUtf8ForFile.getLength());
++                            outFile.close();
++
++                            std::ifstream inFile(sTempFilePathStd, std::ios::in | std::ios::binary | std::ios::ate);
++                            if (inFile.is_open())
++                            {
++                                std::streamsize fileSize = inFile.tellg();
++                                inFile.seekg(0, std::ios::beg);
++                                if (fileSize > 0 && fileSize < (1024 * 1024 * 10))
++                                {
++                                    std::vector<char> buffer(static_cast<size_t>(fileSize));
++                                    if (inFile.read(buffer.data(), fileSize))
++                                    {
++                                        OString sReadUtf8FromFile(buffer.data(), static_cast<sal_Int32>(fileSize));
++                                        sTextToImport = rtl::OStringToOUString(sReadUtf8FromFile, RTL_TEXTENCODING_UTF8);
++                                        bLaunderingSuccessful = true;
++                                    }
++                                } else if (fileSize == 0) {
++                                    sTextToImport = OUString();
++                                    bLaunderingSuccessful = true;
++                                }
++                                inFile.close();
++                            } else { /* fprintf error */ }
++                        } else { /* fprintf error */ }
++                        std::remove(sTempFilePathStd.c_str());
++                    } else { /* fprintf error for tmpnam */ }
++
++                    if (!bLaunderingSuccessful) {
++                        fprintf(stderr, "INFO: STD C++ Text laundering via temp file FAILED. Using original clipboard string.\n");
++                    } else {
++                        fprintf(stderr, "INFO: STD C++ Text laundering via temp file SUCCEEDED.\n");
++                    }
++                    // --- END: Standard C++ Temp File Laundering ---
++
++                    // Now define aCellPos and perform import using sTextToImport
++                    ScRange aRangeForPos;
++                    SCCOL nPosX = 0;
++                    SCROW nPosY = 0;
++                    SCTAB nTabNo = GetViewData().GetTabNo();
++
++                    if (GetViewData().GetSimpleArea(aRangeForPos) == SC_MARK_SIMPLE) {
++                        nPosX = aRangeForPos.aStart.Col();
++                        nPosY = aRangeForPos.aStart.Row();
++                    } else {
++                        nPosX = GetViewData().GetCurX();
++                        nPosY = GetViewData().GetCurY();
++                    }
++                    ScAddress aCellPos(nPosX, nPosY, nTabNo);
++
++                    auto pObj = std::make_shared<ScImportExport>(GetViewData().GetDocument(), aCellPos);
++                    pObj->SetOverwriting(true);
++                    ScAsciiOptions aOptions;
++                    aOptions.SetEvaluateFormulas(false); // CRITICAL for unformatted
++                    aOptions.SetCharSet(RTL_TEXTENCODING_UNICODE);
++                    aOptions.SetFixedLen(false);
++                    aOptions.SetFieldSeps(OUString('\t'));
++                    // aOptions.SetLanguage(SvtLanguageOptions().GetUILanguage()); // Example language setting
++                    aOptions.SetLanguage(LANGUAGE_GERMAN); // Or your preferred language
++                    pObj->SetExtOptions(aOptions);
++
++                    if (pObj->ImportString(sTextToImport, format)) {
++                        bPastedSuccessfully = true; // <<<<<<<<<< SETTING THE FLAG HERE
++                    }
++                } // End of if(GetString)
++            } // End of if(xTransferable)
++
++            // This part handles the SfxRequest based on bPastedSuccessfully
++            if (bPastedSuccessfully)
++            {
++                rReq.SetReturnValue(SfxInt16Item(rReq.GetSlot(), 1)); // Use rReq.GetSlot()
++                rReq.Done();
++                if (pTabViewShell) pTabViewShell->CellContentChanged(); // Check pTabViewShell
+             }
+-            break;
++            else
++            {
++                rReq.SetReturnValue(SfxInt16Item(rReq.GetSlot(), 0));
++                rReq.Done(); // Or Ignore(), but Done() is usually better if action was attempted
++            }
++            break; // Crucial break for the switch case
++        } // End of case SID_PASTE_UNFORMATTED
++
++
+ 
+-        //  other
++            //  other
+ 
+         case FID_INS_ROWBRK:
+             pTabViewShell->InsertPageBreak( false );
